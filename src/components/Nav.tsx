@@ -7,7 +7,7 @@ const links = [
   { label: "How It Works", href: "#how-it-works" },
   { label: "Features", href: "#features" },
   { label: "For Partners", href: "#partners" },
-  { label: "Contact Us", href: "#contact" },
+  { label: "Watch Demo", href: "#demo" },
 ];
 
 export default function Nav() {
@@ -57,16 +57,16 @@ export default function Nav() {
         {/* Desktop CTAs */}
         <div className="hidden md:flex items-center gap-3">
           <a
-            href="tel:+1XXXXXXXXXX"
+            href="#demo"
             className="flex items-center gap-2 text-sm font-semibold text-blue-700 border border-blue-200 hover:border-blue-400 hover:bg-blue-50 px-4 py-2 rounded-full transition-all"
           >
-            <span>📞</span> Call VoiceDesk Live
+            Watch Demo
           </a>
           <a
-            href="#contact"
+            href="#demo"
             className="text-sm font-semibold text-white gradient-bg px-5 py-2 rounded-full hover:opacity-90 transition-opacity"
           >
-            Partner With Us →
+            Request a Demo →
           </a>
         </div>
 
@@ -104,17 +104,18 @@ export default function Nav() {
               ))}
               <div className="flex flex-col gap-3 pt-2">
                 <a
-                  href="tel:+1XXXXXXXXXX"
+                  href="#demo"
                   className="text-center text-sm font-semibold text-blue-700 border border-blue-200 px-4 py-2.5 rounded-full"
+                  onClick={() => setMenuOpen(false)}
                 >
-                  📞 Call VoiceDesk Live
+                  Watch Demo
                 </a>
                 <a
-                  href="#contact"
+                  href="#demo"
                   className="text-center text-sm font-semibold text-white gradient-bg px-5 py-2.5 rounded-full"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Partner With Us →
+                  Request a Demo →
                 </a>
               </div>
             </nav>
