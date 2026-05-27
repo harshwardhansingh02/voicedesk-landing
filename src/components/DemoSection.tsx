@@ -195,8 +195,8 @@ export default function DemoSection() {
                     {error && (
                       <p className="text-red-500 text-sm">
                         Something went wrong — please email us directly at{" "}
-                        <a href="mailto:harshwardhansingh02@gmail.com" className="underline">
-                          harshwardhansingh02@gmail.com
+                        <a href="mailto:harshwardhan@thevoicedesk.com" className="underline">
+                          harshwardhan@thevoicedesk.com
                         </a>
                       </p>
                     )}
