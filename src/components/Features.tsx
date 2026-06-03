@@ -34,11 +34,6 @@ const features = [
     title: "Graceful human handover",
     body: 'Complex requests, upset guests, or someone who simply prefers a human — VoiceDesk transfers with full context, so your staff never has to ask "what did they want?" again.',
   },
-  {
-    icon: "🕐",
-    title: "Always on. Never on leave.",
-    body: "Sunday brunch rush. 11 PM last-minute booking. A public holiday. VoiceDesk answers every time your phone rings, regardless of who's on shift.",
-  },
 ];
 
 export default function Features() {

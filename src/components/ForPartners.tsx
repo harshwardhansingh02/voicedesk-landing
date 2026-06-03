@@ -16,7 +16,7 @@ const pillars = [
   },
   {
     icon: "🤝",
-    title: "Built to complement, not compete",
+    title: "A genuine win-win for your platform",
     body: "Your CRM captures what happens after the visit. VoiceDesk captures the conversation that started it. Every record we create lands in your platform — no parallel system, no data silo.",
   },
 ];

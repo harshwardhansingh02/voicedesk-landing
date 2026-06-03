@@ -7,7 +7,7 @@ const links = [
   { label: "How It Works", href: "#how-it-works" },
   { label: "Features", href: "#features" },
   { label: "For Partners", href: "#partners" },
-  { label: "Watch Demo", href: "#demo" },
+  { label: "Try Live Demo", href: "#live-demo" },
 ];
 
 export default function Nav() {
@@ -58,12 +58,6 @@ export default function Nav() {
         <div className="hidden md:flex items-center gap-3">
           <a
             href="#demo"
-            className="flex items-center gap-2 text-sm font-semibold text-blue-700 border border-blue-200 hover:border-blue-400 hover:bg-blue-50 px-4 py-2 rounded-full transition-all"
-          >
-            Watch Demo
-          </a>
-          <a
-            href="#demo"
             className="text-sm font-semibold text-white gradient-bg px-5 py-2 rounded-full hover:opacity-90 transition-opacity"
           >
             Request a Demo →
@@ -103,13 +97,6 @@ export default function Nav() {
                 </a>
               ))}
               <div className="flex flex-col gap-3 pt-2">
-                <a
-                  href="#demo"
-                  className="text-center text-sm font-semibold text-blue-700 border border-blue-200 px-4 py-2.5 rounded-full"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Watch Demo
-                </a>
                 <a
                   href="#demo"
                   className="text-center text-sm font-semibold text-white gradient-bg px-5 py-2.5 rounded-full"

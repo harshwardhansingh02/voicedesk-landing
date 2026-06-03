@@ -74,13 +74,13 @@ export default function Hero() {
             {/* CTA row */}
             <motion.div variants={item} className="flex flex-wrap gap-4 mb-12">
               <motion.a
-                href="tel:+1XXXXXXXXXX"
+                href="#live-demo"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className="flex items-center gap-2.5 gradient-bg text-white font-semibold text-base px-7 py-3.5 rounded-full shadow-lg shadow-blue-200 hover:opacity-95 transition-opacity"
               >
-                <span className="text-lg">📞</span>
-                Hear VoiceDesk Live — Call Now
+                <span className="text-lg">🎙️</span>
+                Talk to VoiceDesk — Live, Right Now
               </motion.a>
               <motion.a
                 href="#how-it-works"
