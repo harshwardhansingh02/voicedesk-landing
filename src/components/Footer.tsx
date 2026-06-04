@@ -33,12 +33,12 @@ export default function Footer() {
 
           <div className="flex flex-wrap justify-center gap-4">
             <motion.a
-              href="tel:+1XXXXXXXXXX"
+              href="#live-demo"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               className="flex items-center gap-2.5 bg-white text-blue-700 font-semibold px-8 py-3.5 rounded-full hover:bg-blue-50 transition-colors"
             >
-              <span className="text-xl">📞</span> Hear It Live — Call Now
+              <span className="text-xl">🎙️</span> Try Live Demo
             </motion.a>
             <motion.a
               href="#contact"
