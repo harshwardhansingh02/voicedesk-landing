@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect, Fragment } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 const WS_BASE =
   (process.env.NEXT_PUBLIC_DEMO_WS_URL || "ws://localhost:8081").replace(/\/$/, "");
@@ -14,14 +14,24 @@ const TTS_RATE    = 22050;
 type Persona = { id: string; name: string; gender: string; style: string[] };
 type CallState = "idle" | "listening" | "thinking" | "speaking";
 type Message = { role: string; text: string };
-type BookingProgress = { name: boolean; date: boolean; partySize: boolean; confirmed: boolean };
+type BookingProgress = {
+  name: boolean; date: boolean; time: boolean;
+  guests: boolean; preference: boolean; confirmed: boolean;
+};
 
 const BOOKING_STEPS = [
-  { id: "name",      label: "Name"    },
-  { id: "date",      label: "Date"    },
-  { id: "partySize", label: "Guests"  },
-  { id: "confirmed", label: "Done ✓"  },
+  { id: "name",       label: "Name"       },
+  { id: "date",       label: "Date"       },
+  { id: "time",       label: "Time"       },
+  { id: "guests",     label: "Pax"        },
+  { id: "preference", label: "Seating"    },
+  { id: "confirmed",  label: "Confirmed"  },
 ] as const;
+
+const EMPTY_PROGRESS: BookingProgress = {
+  name: false, date: false, time: false,
+  guests: false, preference: false, confirmed: false,
+};
 
 const ANIM_CSS = `
 @keyframes voiceBar   { 0%,100%{height:4px}  50%{height:16px} }
@@ -84,9 +94,7 @@ export default function VoiceDemoWidget() {
   const [previewingId, setPreviewingId] = useState<string | null>(null);
   const [muted, setMuted]               = useState(false);
   const [elapsed, setElapsed]           = useState(0);
-  const [bookingProgress, setBookingProgress] = useState<BookingProgress>({
-    name: false, date: false, partySize: false, confirmed: false,
-  });
+  const [bookingProgress, setBookingProgress] = useState<BookingProgress>(EMPTY_PROGRESS);
 
   const wsRef          = useRef<WebSocket | null>(null);
   const captureCtxRef  = useRef<AudioContext | null>(null);
@@ -163,7 +171,7 @@ export default function VoiceDemoWidget() {
     setMuted(false);
     setElapsed(0);
     setTranscript([]);
-    setBookingProgress({ name: false, date: false, partySize: false, confirmed: false });
+    setBookingProgress(EMPTY_PROGRESS);
     if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
   }, [stopMic, setState]);
 
@@ -195,7 +203,7 @@ export default function VoiceDemoWidget() {
     setCallActive(true);
     callActiveRef.current = true;
     setState("listening");
-    setBookingProgress({ name: false, date: false, partySize: false, confirmed: false });
+    setBookingProgress(EMPTY_PROGRESS);
     setElapsed(0);
     timerRef.current = setInterval(() => setElapsed(prev => prev + 1), 1000);
 
@@ -496,34 +504,34 @@ export default function VoiceDemoWidget() {
               ))}
             </div>
 
-            {/* Booking progress tracker */}
-            <div style={{ width: "100%", display: "flex", alignItems: "flex-start" }}>
-              {BOOKING_STEPS.map((step, i) => {
+            {/* Booking progress — order-agnostic, ticks light up as details are captured */}
+            <div style={{
+              width: "100%",
+              display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 6,
+            }}>
+              {BOOKING_STEPS.map(step => {
                 const done = bookingProgress[step.id as keyof BookingProgress];
                 return (
-                  <Fragment key={step.id}>
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
-                      <div style={{
-                        width: 20, height: 20, borderRadius: "50%",
-                        background: done ? "#1e3a1e" : "#161b22",
-                        border: `1.5px solid ${done ? "#10b981" : "#30363d"}`,
-                        color: done ? "#10b981" : "#8b949e",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: 10, fontWeight: 600,
-                      }}>
-                        {done ? "✓" : ""}
-                      </div>
-                      <div style={{ fontSize: 10, color: "#8b949e", textAlign: "center", marginTop: 4, whiteSpace: "nowrap" }}>
-                        {step.label}
-                      </div>
-                    </div>
-                    {i < BOOKING_STEPS.length - 1 && (
-                      <div style={{
-                        flex: 1, height: 1, marginTop: 10,
-                        background: done ? "#10b981" : "#30363d",
-                      }} />
-                    )}
-                  </Fragment>
+                  <div key={step.id} style={{
+                    display: "flex", alignItems: "center", gap: 5,
+                    padding: "5px 10px", borderRadius: 999,
+                    fontSize: 11, fontWeight: 500,
+                    background: done ? "rgba(16,185,129,0.10)" : "#161b22",
+                    border: `1px solid ${done ? "#10b981" : "#30363d"}`,
+                    color: done ? "#10b981" : "#8b949e",
+                    transition: "all 0.25s ease",
+                  }}>
+                    <span style={{
+                      width: 14, height: 14, borderRadius: "50%",
+                      display: "inline-flex", alignItems: "center", justifyContent: "center",
+                      background: done ? "#10b981" : "transparent",
+                      border: done ? "none" : "1px solid #30363d",
+                      color: "white", fontSize: 9, fontWeight: 700,
+                    }}>
+                      {done ? "✓" : ""}
+                    </span>
+                    {step.label}
+                  </div>
                 );
               })}
             </div>
