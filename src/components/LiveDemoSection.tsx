@@ -41,7 +41,7 @@ export default function LiveDemoSection() {
         {/* Footnote */}
         <FadeIn delay={0.2}>
           <p className="mt-8 text-center text-slate-600 text-xs">
-            Live call · Sarvam AI voices · Saagar Ratna demo restaurant · No account needed
+            Live call · Sarvam AI voices · Madras Cafe demo restaurant · No account needed
           </p>
         </FadeIn>
       </div>
