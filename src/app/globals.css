@@ -69,6 +69,19 @@ body {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
+   v2 component pseudo-state styles (hover / active / focus) that inline
+   React style can't express. Component visual specs live in §3 of the
+   build handoff.
+   ───────────────────────────────────────────────────────────────────────── */
+.vd-btn:hover { opacity: 0.92; }
+.vd-btn:active { transform: scale(0.98); }
+.vd-btn-secondary:hover { background: var(--color-sand); opacity: 1; }
+.vd-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(139, 111, 71, 0.45);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
    Legacy support — used ONLY by /legacy/restaurant. Do not use in v2 code.
    Kept so the archived restaurant page renders identically to its prior state.
    ───────────────────────────────────────────────────────────────────────── */

@@ -66,18 +66,39 @@ export default function HoldingPage() {
         Live soon. The old restaurant landing is preserved while we ship.
       </p>
 
-      <Link
-        href="/legacy/restaurant"
+      <div
         style={{
           marginTop: 28,
-          fontSize: 13,
-          color: "var(--color-mocha)",
-          textDecoration: "underline",
-          textUnderlineOffset: 4,
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+          alignItems: "center",
         }}
       >
-        View the archived restaurant page →
-      </Link>
+        <Link
+          href="/photographer"
+          style={{
+            fontSize: 13,
+            color: "var(--color-ink)",
+            textDecoration: "underline",
+            textUnderlineOffset: 4,
+            fontWeight: 500,
+          }}
+        >
+          Preview the photographer page →
+        </Link>
+        <Link
+          href="/legacy/restaurant"
+          style={{
+            fontSize: 12,
+            color: "var(--color-sand-dark)",
+            textDecoration: "underline",
+            textUnderlineOffset: 4,
+          }}
+        >
+          View the archived restaurant page
+        </Link>
+      </div>
     </main>
   );
 }
