@@ -1,16 +1,77 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────────────────
+   v2 Design tokens — Warm Nude (Direction 2, locked)
+   Tailwind v4 @theme block: tokens auto-expose as Tailwind utility classes
+   (bg-linen, text-ink, etc.) AND as CSS variables (var(--color-linen)).
+   ───────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* Surfaces */
+  --color-linen: #FAF7F2;            /* page background */
+  --color-cream: #FFFFFF;            /* card surfaces */
+  --color-sand: #F0E8DC;             /* tinted surface, badges */
+  --color-border: #E8DFD0;           /* default border */
+  --color-border-strong: #D6C9B0;    /* emphasized border */
+
+  /* Text */
+  --color-ink: #1A1208;              /* primary text */
+  --color-mocha: #8B6F47;            /* secondary text, accent */
+  --color-mocha-mid: #A89070;        /* tertiary */
+  --color-sand-dark: #B5A08A;        /* lowest-emphasis text */
+
+  /* Hero / dark inverse surfaces */
+  --color-ink-hero: #1A1208;
+  --color-cream-on-dark: #FAF7F2;
+  --color-mocha-on-dark: #C9A87C;
+
+  /* Semantic */
+  --color-success: #1D9E75;
+  --color-success-bg: #E1F5EE;
+  --color-success-text: #085041;
+  --color-warm-accent: #C9A84C;      /* gold accent — used sparingly */
+  --color-danger-text: #993C1D;
+  --color-danger-bg: #FAECE7;
+
+  /* Channel brand (chat mockups only) */
+  --color-ig: #7F77DD;
+  --color-ig-bg: #EEEDFE;
+  --color-wa: #1D9E75;
+  --color-wa-bg: #E1F5EE;
+
+  /* Typography */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* Spacing — mobile section padding */
+  --section-pad-y: 3rem;
+  --section-pad-x: 1.25rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   v2 base styles
+   ───────────────────────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background: #ffffff;
-  color: #0f172a;
+  background: var(--color-linen);
+  color: var(--color-ink);
+  font-family: var(--font-jakarta), var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Legacy support — used ONLY by /legacy/restaurant. Do not use in v2 code.
+   Kept so the archived restaurant page renders identically to its prior state.
+   ───────────────────────────────────────────────────────────────────────── */
 .gradient-text {
   background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 55%, #0ea5e9 100%);
   -webkit-background-clip: text;

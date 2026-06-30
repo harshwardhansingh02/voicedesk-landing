@@ -1,29 +1,83 @@
-import Nav from "@/components/Nav";
-import Hero from "@/components/Hero";
-import Problems from "@/components/Problems";
-import HowItWorks from "@/components/HowItWorks";
-import Features from "@/components/Features";
-import Testimonials from "@/components/Testimonials";
-import ForPartners from "@/components/ForPartners";
-import LiveDemoSection from "@/components/LiveDemoSection";
-import DemoSection from "@/components/DemoSection";
-import Footer from "@/components/Footer";
+// Placeholder root page during v2 build. Will be replaced with a 307 redirect
+// to /photographer in step 12 of the build sequence once that route exists.
 
-export default function Home() {
+import type { Metadata } from "next";
+import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "VoiceDesk — Building v2",
+  robots: { index: false, follow: false },
+};
+
+export default function HoldingPage() {
   return (
-    <>
-      <Nav />
-      <main>
-        <Hero />
-        <Problems />
-        <HowItWorks />
-        <Features />
-        <Testimonials />
-        <ForPartners />
-        <LiveDemoSection />
-        <DemoSection />
-      </main>
-      <Footer />
-    </>
+    <main
+      style={{
+        background: "var(--color-linen)",
+        color: "var(--color-ink)",
+        minHeight: "100svh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "var(--section-pad-y) var(--section-pad-x)",
+        textAlign: "center",
+        fontFamily: "var(--font-jakarta), system-ui, sans-serif",
+      }}
+    >
+      <span
+        style={{
+          fontFamily: "var(--font-jakarta), system-ui, sans-serif",
+          fontSize: 10,
+          fontWeight: 500,
+          textTransform: "uppercase",
+          letterSpacing: "0.14em",
+          color: "var(--color-mocha)",
+          marginBottom: 16,
+        }}
+      >
+        In progress · Preview
+      </span>
+
+      <h1
+        style={{
+          fontFamily: "var(--font-fraunces), Georgia, serif",
+          fontStyle: "italic",
+          fontWeight: 400,
+          fontSize: 32,
+          lineHeight: 1.18,
+          color: "var(--color-ink)",
+          margin: 0,
+          maxWidth: 440,
+        }}
+      >
+        VoiceDesk is being rebuilt for solo creators and wedding pros.
+      </h1>
+
+      <p
+        style={{
+          fontSize: 15,
+          lineHeight: 1.6,
+          color: "var(--color-mocha)",
+          marginTop: 18,
+          maxWidth: 380,
+        }}
+      >
+        Live soon. The old restaurant landing is preserved while we ship.
+      </p>
+
+      <Link
+        href="/legacy/restaurant"
+        style={{
+          marginTop: 28,
+          fontSize: 13,
+          color: "var(--color-mocha)",
+          textDecoration: "underline",
+          textUnderlineOffset: 4,
+        }}
+      >
+        View the archived restaurant page →
+      </Link>
+    </main>
   );
 }
