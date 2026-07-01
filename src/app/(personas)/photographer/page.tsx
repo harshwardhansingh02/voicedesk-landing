@@ -7,6 +7,7 @@ import Beyond from "@/components/sections/Beyond";
 import Objections from "@/components/sections/Objections";
 import FounderNote from "@/components/sections/FounderNote";
 import Footer from "@/components/sections/Footer";
+import DemoCapture from "@/components/demos/DemoCapture";
 import { photographerConfig } from "@/personas/photographer";
 
 // Persona page for wedding photographers.
@@ -35,7 +36,8 @@ export default function PhotographerPage() {
       <main>
         <Hero config={photographerConfig} />
         <Mirror config={photographerConfig} />
-        {/* Demos land in steps 7-9: DemoCapture, DemoChannels, DemoFollowup */}
+        <DemoCapture config={photographerConfig} />
+        {/* Demos remaining (steps 8-9): DemoChannels, DemoFollowup */}
         <TheTurn config={photographerConfig} />
         <Beyond config={photographerConfig} />
         <Objections config={photographerConfig} />
