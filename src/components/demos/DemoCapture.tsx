@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useMemo } from "react";
-import { motion, LayoutGroup } from "framer-motion";
+import { motion } from "framer-motion";
 
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
@@ -57,8 +57,10 @@ const T_FIELD_4 = 2800;
 const T_CAPTURED = 3400;
 const T_DONE = 4400;
 
-const INITIAL_STATS = { count: "3", value: "₹4.2L" };
-const SETTLED_STATS = { count: "4", value: "₹7.2L" };
+// Totals derived from photographer.pretypedLeads (Ananya ₹2.5L + Pooja ₹1.2L)
+// + newLead Nidhi (₹3L). If the pre-typed list changes, revisit these.
+const INITIAL_STATS = { count: "2", value: "₹3.7L" };
+const SETTLED_STATS = { count: "3", value: "₹6.7L" };
 
 // Avatar palette matches the demo reference HTML — keeps visual identity
 // consistent when someone toggles between HeroLoop and this component.
@@ -143,17 +145,15 @@ export default function DemoCapture({ config }: Props) {
   const stats = captured ? SETTLED_STATS : INITIAL_STATS;
   const showToast = stage !== "idle" && stage !== "done";
 
-  // Board ordering: pre-typed leads always render. Nidhi appears after
-  // "arriving" starts. After capture, she floats to the top (position 0)
-  // — LayoutGroup + motion.div animate the position change.
+  // Board ordering: pre-typed leads always render. Nidhi appears at the
+  // bottom once tapped and STAYS there — no auto-sort. The takeaway is the
+  // provenance line ("captured while you were shooting a sangeet"), not a
+  // triage reveal. Sort behavior can return in a later cut if we want it.
   const orderedLeads = useMemo<Array<{ lead: LeadSeed; role: "pretyped" | "new" }>>(() => {
     const pre = pretypedLeads.map((lead) => ({ lead, role: "pretyped" as const }));
     if (stage === "idle") return pre;
-    const withNew = [...pre, { lead: newLead, role: "new" as const }];
-    if (!captured) return withNew;
-    // After capture — Nidhi at top, followed by pre-typed leads in original order.
-    return [{ lead: newLead, role: "new" as const }, ...pre];
-  }, [stage, captured, pretypedLeads, newLead]);
+    return [...pre, { lead: newLead, role: "new" as const }];
+  }, [stage, pretypedLeads, newLead]);
 
   return (
     <section
@@ -245,45 +245,32 @@ export default function DemoCapture({ config }: Props) {
             </div>
           </div>
 
-          {/* Leads list */}
-          <LayoutGroup>
-            <motion.div
-              style={{ display: "flex", flexDirection: "column", gap: 8 }}
-            >
-              {orderedLeads.map(({ lead, role }, idx) => (
-                <motion.div
+          {/* Leads list — no sort. Nidhi always joins at the bottom. */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {orderedLeads.map(({ lead, role }, idx) =>
+              role === "pretyped" ? (
+                <LeadCard
                   key={lead.name}
-                  layout
-                  transition={{
-                    layout: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] },
+                  lead={lead}
+                  avatarColor={AVATAR_PALETTE[idx % AVATAR_PALETTE.length]}
+                />
+              ) : (
+                <NewLeadCard
+                  key={lead.name}
+                  lead={lead}
+                  arrived={stage !== "idle"}
+                  captured={captured}
+                  typed={{
+                    date: dateTyped,
+                    budget: budgetTyped,
+                    events: eventsTyped,
+                    city: cityTyped,
                   }}
-                >
-                  {role === "pretyped" ? (
-                    <LeadCard
-                      lead={lead}
-                      avatarColor={AVATAR_PALETTE[idx % AVATAR_PALETTE.length]}
-                      highlighted={false}
-                      showFollowUpFlag={false}
-                    />
-                  ) : (
-                    <NewLeadCard
-                      lead={lead}
-                      arrived={stage !== "idle"}
-                      captured={captured}
-                      done={stage === "done"}
-                      typed={{
-                        date: dateTyped,
-                        budget: budgetTyped,
-                        events: eventsTyped,
-                        city: cityTyped,
-                      }}
-                      provenance={config.demo1.provenance}
-                    />
-                  )}
-                </motion.div>
-              ))}
-            </motion.div>
-          </LayoutGroup>
+                  provenance={config.demo1.provenance}
+                />
+              )
+            )}
+          </div>
 
           {/* Trigger / Reset */}
           <div style={{ marginTop: 14 }}>
@@ -299,7 +286,7 @@ export default function DemoCapture({ config }: Props) {
                 fullWidth
                 disabled={stage !== "done"}
               >
-                Reset demo
+                Watch it happen again
               </Button>
             )}
           </div>
@@ -385,22 +372,17 @@ type AvatarColor = { bg: string; fg: string };
 function LeadCard({
   lead,
   avatarColor,
-  highlighted,
-  showFollowUpFlag,
 }: {
   lead: LeadSeed;
   avatarColor: AvatarColor;
-  highlighted: boolean;
-  showFollowUpFlag: boolean;
 }) {
   return (
     <article
       style={{
         background: "var(--color-cream)",
-        border: `0.5px solid ${highlighted ? "var(--color-warm-accent)" : "var(--color-border)"}`,
+        border: "0.5px solid var(--color-border)",
         borderRadius: "var(--radius-md)",
         padding: "11px 13px",
-        transition: "border-color 0.5s ease",
       }}
     >
       <div
@@ -444,34 +426,6 @@ function LeadCard({
         events={lead.events}
         city={lead.city}
       />
-      {showFollowUpFlag && (
-        <div
-          style={{
-            marginTop: 8,
-            paddingTop: 8,
-            borderTop: "0.5px solid var(--color-border)",
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            fontFamily: "var(--font-jakarta), system-ui, sans-serif",
-            fontSize: 11,
-            fontWeight: 500,
-            color: "#8B5A05",
-          }}
-        >
-          <span
-            aria-hidden
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "#DA9820",
-              flexShrink: 0,
-            }}
-          />
-          Follow up today
-        </div>
-      )}
     </article>
   );
 }
@@ -480,40 +434,23 @@ function NewLeadCard({
   lead,
   arrived,
   captured,
-  done,
   typed,
   provenance,
 }: {
   lead: LeadSeed;
   arrived: boolean;
   captured: boolean;
-  done: boolean;
   typed: { date: string; budget: string; events: string; city: string };
   provenance: string;
 }) {
-  // Once done, this card looks identical to a settled LeadCard (with a
-  // Follow-up flag). Before that, it's mid-typing with the gold border.
-  if (done) {
-    return (
-      <LeadCard
-        lead={lead}
-        avatarColor={NEW_AVATAR}
-        highlighted
-        showFollowUpFlag
-      />
-    );
-  }
-
   return (
     <article
       style={{
         background: "var(--color-cream)",
-        border: captured
-          ? "0.5px solid var(--color-border)"
-          : "0.5px solid var(--color-warm-accent)",
+        border: "0.5px solid var(--color-warm-accent)",
         borderRadius: "var(--radius-md)",
         padding: "11px 13px",
-        maxHeight: arrived ? 260 : 0,
+        maxHeight: arrived ? 280 : 0,
         opacity: arrived ? 1 : 0,
         overflow: "hidden",
         transition:
@@ -565,16 +502,24 @@ function NewLeadCard({
 
       <TypingFieldGrid typed={typed} />
 
+      {/* Provenance — the takeaway line. Elevated after capture: Fraunces
+          italic, gold, subtle sand tint background. This is the "oh." moment. */}
       <div
         style={{
-          marginTop: 8,
-          paddingTop: 8,
-          borderTop: "0.5px solid var(--color-border)",
-          fontFamily: "var(--font-jakarta), system-ui, sans-serif",
-          fontSize: 11,
+          marginTop: 10,
+          padding: captured ? "9px 12px" : "8px 12px",
+          background: captured ? "rgba(201,168,76,0.10)" : "transparent",
+          borderRadius: "var(--radius-sm)",
+          fontFamily: "var(--font-fraunces), Georgia, serif",
+          fontStyle: "italic",
+          fontWeight: 400,
+          fontSize: captured ? 13 : 12,
+          lineHeight: 1.45,
           color: captured ? "var(--color-warm-accent)" : "var(--color-sand-dark)",
-          transition: "color 0.6s ease",
-          opacity: captured ? 1 : 0.85,
+          textAlign: "center",
+          opacity: captured ? 1 : 0.7,
+          transition:
+            "background 0.6s ease, color 0.5s ease, font-size 0.4s ease, opacity 0.5s ease, padding 0.4s ease",
         }}
       >
         {provenance}

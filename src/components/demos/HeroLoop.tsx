@@ -54,8 +54,10 @@ const AVATAR_PALETTE = [
 
 const NEW_AVATAR = { bg: "rgba(201,168,76,0.13)", fg: "#A88634" };
 
-const INITIAL_STATS = { count: 3, value: "₹4.2L" };
-const SETTLED_STATS = { count: 4, value: "₹7.2L" };
+// Totals mirror DemoCapture — Ananya ₹2.5L + Pooja ₹1.2L initially, then
+// Nidhi ₹3L captured. If pretypedLeads changes, revisit here too.
+const INITIAL_STATS = { count: 2, value: "₹3.7L" };
+const SETTLED_STATS = { count: 3, value: "₹6.7L" };
 
 export default function HeroLoop({ config }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);

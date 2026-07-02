@@ -53,17 +53,6 @@ export const photographerConfig: PersonaConfig = {
         city: "Pune",
         badge: "Warm",
       },
-      {
-        name: "Shreya Mehta",
-        initials: "SM",
-        source: "Missed call",
-        timeAgo: "5 days ago",
-        date: "8 Apr 2027",
-        budget: "₹80K",
-        events: "Mehendi + wedding",
-        city: "Bangalore",
-        badge: "Warm",
-      },
     ],
     newLead: {
       name: "Nidhi Sharma",
