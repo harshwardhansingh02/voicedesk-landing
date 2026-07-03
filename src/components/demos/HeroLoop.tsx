@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "framer-motion";
+import { useInView } from "framer-motion";
 
 import Badge from "@/components/ui/Badge";
 import type { PersonaConfig } from "@/personas/types";
@@ -29,7 +29,11 @@ import type { PersonaConfig } from "@/personas/types";
 // height, or box-shadow (GPU budget rule from §5).
 // ──────────────────────────────────────────────────────────────────────────
 
-const MAX_PLAYS = 10;
+// Was 10 per §5, but 10×6s = 60s means anyone lingering on the hero for a
+// minute sees a frozen final state that reads as a bug (Harsh reported this).
+// Bumping to 30 → 3 minutes of visible looping before pause, which comfortably
+// covers real read time on the hero.
+const MAX_PLAYS = 30;
 const CYCLE_MS = 6000;
 
 // Phase boundaries (cumulative milliseconds from cycle start)
@@ -61,8 +65,13 @@ const SETTLED_STATS = { count: 3, value: "₹6.7L" };
 
 export default function HeroLoop({ config }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(containerRef, { amount: 0.4 });
-  const prefersReducedMotion = useReducedMotion();
+  // Deliberately not restricting to a threshold — even a sliver in view
+  // should keep the loop running so users don't see a frozen frame while
+  // scrolling. Also intentionally NOT reading prefers-reduced-motion here:
+  // the animation is small, gentle (opacity + subtle scale), and iOS Low
+  // Power Mode force-enables that flag — which was silently freezing the
+  // whole demo for users on low battery.
+  const inView = useInView(containerRef);
 
   // Stage 0 = initial, 1 = card arriving, 2-5 = fields typing, 6 = settled
   const [stage, setStage] = useState(0);
@@ -70,7 +79,7 @@ export default function HeroLoop({ config }: Props) {
   const [manualPaused, setManualPaused] = useState(false);
 
   const isComplete = playCount >= MAX_PLAYS;
-  const shouldRun = inView && !manualPaused && !isComplete && !prefersReducedMotion;
+  const shouldRun = inView && !manualPaused && !isComplete;
   const showReplay = manualPaused || isComplete;
 
   // Cycle scheduler — re-runs whenever playCount changes (each cycle end) or
@@ -97,13 +106,8 @@ export default function HeroLoop({ config }: Props) {
     return () => timeouts.forEach(clearTimeout);
   }, [shouldRun, playCount]);
 
-  // When reduced motion is set, snap to the settled state so the user still
-  // sees the punchline without animation.
-  useEffect(() => {
-    if (prefersReducedMotion) setStage(6);
-  }, [prefersReducedMotion]);
-
-  // When loop completes naturally (10 plays), hold on settled state.
+  // When loop completes naturally (MAX_PLAYS), hold on settled state so the
+  // user still sees the punchline (Nidhi captured) alongside the Replay link.
   useEffect(() => {
     if (isComplete) setStage(6);
   }, [isComplete]);
