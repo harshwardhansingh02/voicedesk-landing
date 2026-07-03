@@ -9,21 +9,19 @@ import Eyebrow from "@/components/ui/Eyebrow";
 import Icon from "@/components/ui/Icon";
 import type { LeadSeed, PersonaConfig } from "@/personas/types";
 
+// Stage type covers idle → arriving → typing (4 steps) → captured → done.
+// After `done` the demo persists in captured state; no reset available.
+
 // ─────────────────────────────────────────────────────────────────────────
-// Demo 1 — the interactive full "capture" moment. Distinct from HeroLoop
-// (which is ambient/silent). This one is triggered by a tap and includes:
+// Demo 1 — the interactive "capture" moment. Triggered by tap on the
+// dashboard's caller toast. Includes:
 //   • Toast notification when the call ends
 //   • Character-by-character typing of each field
 //   • Simultaneous "Captured" badge + stats tick at t=3.4s
-//   • Board re-sort — Nidhi (Hot) floats to top with "Follow up today"
-//     amber flag. This is the "one-glance triage" beat.
-//   • Reset button at t=4.4s
+//   • Provenance line elevated post-capture (the emotional beat)
 //
-// Timing tweaks locked per handoff §5:
-//   T_FIELD_1  400ms  — the "oh!" hits fast
-//   T_FIELD_N  +800ms — tightened from 1200ms
-//   T_CAPTURED 3400ms — badge + stats tick + board re-sort all fire together
-//   T_DONE     4400ms — reset button reveals
+// No board re-sort, no replay. Post-capture the demo stays in the settled
+// state; the progression CTA below the dashboard advances to Demo 2.
 // ─────────────────────────────────────────────────────────────────────────
 
 type Stage =
@@ -62,8 +60,7 @@ const T_DONE = 4400;
 const INITIAL_STATS = { count: "2", value: "₹3.7L" };
 const SETTLED_STATS = { count: "3", value: "₹6.7L" };
 
-// Avatar palette matches the demo reference HTML — keeps visual identity
-// consistent when someone toggles between HeroLoop and this component.
+// Avatar palette matches the demo reference HTML.
 const AVATAR_PALETTE = [
   { bg: "#B5D4F4", fg: "#0C447C" },
   { bg: "#9FE1CB", fg: "#085041" },
@@ -126,11 +123,6 @@ export default function DemoCapture({ config }: Props) {
     schedule(T_DONE, "done");
   };
 
-  const reset = () => {
-    clearTimeouts();
-    setStage("idle");
-  };
-
   useEffect(() => () => clearTimeouts(), []);
 
   const { pretypedLeads, newLead } = config.demo1;
@@ -161,7 +153,7 @@ export default function DemoCapture({ config }: Props) {
         padding: "var(--section-pad-y) var(--section-pad-x)",
         background: "var(--color-linen)",
       }}
-      id="demo-capture"
+      id="demo-1"
     >
       <div style={{ maxWidth: 440, margin: "0 auto" }}>
         {/* Section intro */}
@@ -272,39 +264,24 @@ export default function DemoCapture({ config }: Props) {
             )}
           </div>
 
-          {/* Trigger / Reset */}
-          <div style={{ marginTop: 14 }}>
-            {stage === "idle" ? (
+          {/* Trigger — only visible until the demo has played once */}
+          {stage === "idle" && (
+            <div style={{ marginTop: 14 }}>
               <Button onClick={trigger} fullWidth>
                 <Icon name="phone-off" size={16} strokeWidth={1.75} />
                 {config.demo1.callerName}
               </Button>
-            ) : (
-              <Button
-                onClick={reset}
-                variant="secondary"
-                fullWidth
-                disabled={stage !== "done"}
-              >
-                Watch it happen again
-              </Button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
-        {/* Section outro — the bridge into Demo 2 */}
-        <p
-          style={{
-            marginTop: 22,
-            fontFamily: "var(--font-jakarta), system-ui, sans-serif",
-            fontSize: 14,
-            lineHeight: 1.6,
-            color: "var(--color-mocha)",
-            fontStyle: "italic",
-          }}
-        >
-          {config.demo1.outro}
-        </p>
+        {/* Progression CTA — advances to Demo 2 */}
+        <div style={{ marginTop: 18 }}>
+          <Button href={config.demo1.ctaHref} fullWidth>
+            {config.demo1.ctaLabel}
+            <span aria-hidden style={{ fontSize: 14, marginLeft: 2 }}>→</span>
+          </Button>
+        </div>
       </div>
 
       {/* Keyframes for the toast pulse */}

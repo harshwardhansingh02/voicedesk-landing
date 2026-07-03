@@ -48,12 +48,6 @@ export type TimelineNodeSeed = {
   followup?: string;           // optional second-message bubble (used on `reply`)
 };
 
-export type BeyondPoint = {
-  icon: string;                // lucide icon name
-  title: string;
-  body: string;
-};
-
 export type Objection = {
   fear: string;
   answer: string;
@@ -72,6 +66,14 @@ export type SceneFlavor = {
   averageTicket: string;       // "₹2.5L"
 };
 
+// Narrative text bloc between/around demos. `body` renders as Jakarta
+// paragraphs (mocha), `emphasis` renders as Fraunces italic (ink).
+// Both optional so we can express pure-body or pure-pull-quote variants.
+export type TextBlocContent = {
+  body?: string[];
+  emphasis?: string;
+};
+
 export type PersonaConfig = {
   // Identity
   slug: string;                // 'photographer'
@@ -83,42 +85,63 @@ export type PersonaConfig = {
   heroSub: string;             // one-line agitator with the loss number
   heroLossNumber: string;      // "₹4–6L a year" — pulled out for emphasis
 
-  // Mirror — the "that's literally my Saturday" section
-  mirrorScene: string;         // full vignette paragraph
-  mirrorThesis: string;        // closing thesis line, pull-quote style
+  // Narrative text blocs between demos — the psychological glue.
+  // Each speaks directly to the persona's inner monologue so the demo
+  // that follows lands as "that's exactly the solution to what I just felt".
+  textBlocs: {
+    mirror: TextBlocContent;             // between hero and demo 1
+    betweenDemo1and2: TextBlocContent;   // after demo 1, before demo 2
+    betweenDemo2and3: TextBlocContent;   // after demo 2, before demo 3
+    afterDemo3: TextBlocContent;         // the closing pull-quote before waitlist
+  };
 
   // Demo 1 — Capture
   demo1: {
     intro: string;             // copy above the demo
-    outro: string;             // bridge into demo 2
-    pretypedLeads: LeadSeed[]; // 3 pre-seeded board leads
+    pretypedLeads: LeadSeed[]; // pre-seeded board leads
     newLead: LeadSeed;         // the animated-in lead
     provenance: string;        // "Captured at 11:47 PM while you were..."
     callerName: string;        // "Nidhi just called — tap to see what happened"
+    ctaLabel: string;          // progression CTA — advances to next demo
+    ctaHref: string;           // usually "#demo-2"
   };
 
   // Demo 2 — Channels
   demo2: {
     intro: string;
-    outro: string;
     igThread: ChatMessage[];
     waThread: ChatMessage[];
     unifiedLeadName: string;
     unifiedTouchpoints: Touchpoint[];
+    ctaLabel: string;
+    ctaHref: string;           // usually "#demo-3"
   };
 
   // Demo 3 — Follow-up
   demo3: {
     intro: string;
-    outro: string;
     beforeMissedItems: MissedItem[];
     beforeLossAmount: string;          // "₹2.5L booking · gone."
     afterTimeline: TimelineNodeSeed[];
     afterBookingValue: string;         // "₹2.4L"
+    ctaLabel: string;
+    ctaHref: string;                   // usually "#waitlist"
   };
 
-  // Beyond section — roadmap teaser, 3 cards
-  beyondPoints: BeyondPoint[];
+  // Waitlist / form section — the single form-redirect target.
+  waitlist: {
+    eyebrow: string;
+    headline: string;
+    sub: string;
+    ctaLabel: string;
+    microcopy?: string;
+  };
+
+  // Sticky footer CTA — mobile-only, always visible, redirects to form.
+  stickyCta: {
+    label: string;
+    href: string;
+  };
 
   // Objections — 3 quiet doubts + reassuring answers
   objections: Objection[];

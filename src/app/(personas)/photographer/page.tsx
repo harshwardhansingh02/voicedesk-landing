@@ -1,21 +1,31 @@
 import type { Metadata } from "next";
 
 import Hero from "@/components/sections/Hero";
-import Mirror from "@/components/sections/Mirror";
-import TheTurn from "@/components/sections/TheTurn";
-import Beyond from "@/components/sections/Beyond";
+import TextBloc from "@/components/sections/TextBloc";
 import Objections from "@/components/sections/Objections";
 import FounderNote from "@/components/sections/FounderNote";
+import Waitlist from "@/components/sections/Waitlist";
 import Footer from "@/components/sections/Footer";
 import DemoCapture from "@/components/demos/DemoCapture";
+import DemoChannels from "@/components/demos/DemoChannels";
+import DemoFollowup from "@/components/demos/DemoFollowup";
+import StickyFooterCTA from "@/components/ui/StickyFooterCTA";
 import { photographerConfig } from "@/personas/photographer";
 
-// Persona page for wedding photographers.
-// Sections currently wired: Hero, Mirror, TheTurn, Beyond, Objections,
-// FounderNote, Footer.
-// Missing (build steps 7-10): DemoCapture, DemoChannels, DemoFollowup, Waitlist.
-// Ordering follows handoff §2 architecture map. Step 11 wraps everything
-// into a shared `PersonaPage` template so this file collapses to a one-liner.
+// Persona page for wedding photographers. IA (v2 revisit):
+//   Hero (lean, no CTA) →
+//   TextBloc: Mirror →
+//   Demo 1 (Capture) + progression CTA →
+//   TextBloc: between 1 & 2 →
+//   Demo 2 (Channels — static preview) + progression CTA →
+//   TextBloc: between 2 & 3 →
+//   Demo 3 (Follow-up — static preview) + form-redirect CTA →
+//   TextBloc: closing pull quote →
+//   Waitlist form →
+//   Objections →
+//   FounderNote →
+//   Footer
+// + StickyFooterCTA (mobile-only, form redirect)
 
 export const metadata: Metadata = {
   title: "VoiceDesk for wedding photographers — Stop losing leads tonight",
@@ -31,20 +41,28 @@ export const metadata: Metadata = {
 };
 
 export default function PhotographerPage() {
+  const cfg = photographerConfig;
   return (
     <>
       <main>
-        <Hero config={photographerConfig} />
-        <Mirror config={photographerConfig} />
-        <DemoCapture config={photographerConfig} />
-        {/* Demos remaining (steps 8-9): DemoChannels, DemoFollowup */}
-        <TheTurn config={photographerConfig} />
-        <Beyond config={photographerConfig} />
-        <Objections config={photographerConfig} />
-        {/* Waitlist form lands in step 10 */}
-        <FounderNote config={photographerConfig} />
+        <Hero config={cfg} />
+        <TextBloc content={cfg.textBlocs.mirror} />
+        <DemoCapture config={cfg} />
+        <TextBloc content={cfg.textBlocs.betweenDemo1and2} />
+        <DemoChannels config={cfg} />
+        <TextBloc content={cfg.textBlocs.betweenDemo2and3} />
+        <DemoFollowup config={cfg} />
+        <TextBloc content={cfg.textBlocs.afterDemo3} tone="pullQuote" />
+        <Waitlist config={cfg} />
+        <Objections config={cfg} />
+        <FounderNote config={cfg} />
       </main>
-      <Footer config={photographerConfig} />
+      <Footer config={cfg} />
+      <StickyFooterCTA
+        label={cfg.stickyCta.label}
+        href={cfg.stickyCta.href}
+        hideWhenInView="waitlist"
+      />
     </>
   );
 }

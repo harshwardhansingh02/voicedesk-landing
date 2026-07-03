@@ -1,8 +1,8 @@
 import type { PersonaConfig } from "./types";
 
 // Gold-standard persona config. Every other persona mirrors this shape exactly.
-// Copy here is verbatim from the v2 build handoff §4 — do not paraphrase without
-// flagging back. The persona names and dates are intentional dummy data.
+// Copy for text blocs, war cry, and demo CTAs is verbatim from the IA revisit
+// pass — do not paraphrase without flagging back. Names and dates are dummy.
 
 export const photographerConfig: PersonaConfig = {
   slug: "photographer",
@@ -18,18 +18,37 @@ export const photographerConfig: PersonaConfig = {
     "The average wedding photographer loses ₹4–6L a year to calls and DMs they never saw.",
   heroLossNumber: "₹4–6L a year",
 
-  // Mirror
-  mirrorScene:
-    "It's 9 PM. You're three hours into a sangeet, hands full, lenses everywhere. Your phone buzzes — a bride, ready to book, asking if you're free for December. You'll see it at 1 AM. By then she's messaged four other photographers. By Sunday, she's booked one of them. You never even knew she came.",
-  mirrorThesis:
-    "It's not that you're losing clients. It's that you never knew they were trying to reach you.",
+  // Narrative text blocs — the psychological glue between demos.
+  textBlocs: {
+    mirror: {
+      body: [
+        "It's 9 PM. You're three hours into a sangeet — hands full, lenses everywhere. Your phone buzzes with a bride ready to book December.",
+        "You'll see it at 1 AM. She'll book someone else by Sunday.",
+      ],
+      emphasis:
+        "It's not that you're losing brides. It's that you never knew they were trying to reach you.",
+    },
+    betweenDemo1and2: {
+      body: [
+        "But she didn't just call.",
+        "She DM'd an hour earlier. WhatsApp'd from a different number. And now you're piecing together three half-conversations, trying to figure out if “Priya from Insta” is the same Priya asking about December.",
+      ],
+    },
+    betweenDemo2and3: {
+      body: [
+        "So you have her number. Now what?",
+        "It's Wednesday. You told yourself you'd call Saturday's leads on Tuesday. It's not that you're bad at follow-up — you're just always mid-shoot when the window's open.",
+      ],
+    },
+    afterDemo3: {
+      emphasis: "That's the day you didn't have. Now you do.",
+    },
+  },
 
   // Demo 1 — Capture
   demo1: {
     intro:
       "Catching every lead is where it starts. Every call, every DM, every message — captured, qualified, and sorted by urgency before you finish your shoot.",
-    outro:
-      "Catching the lead is the easy part. What happens when she reaches out three different ways — and you're still shooting?",
     pretypedLeads: [
       {
         name: "Ananya Rao",
@@ -67,14 +86,14 @@ export const photographerConfig: PersonaConfig = {
     },
     provenance: "Captured at 11:47 PM while you were busy shooting a sangeet",
     callerName: "Nidhi just called — tap to see what happened",
+    ctaLabel: "See what happens when she also DMs",
+    ctaHref: "#demo-2",
   },
 
   // Demo 2 — Channels
   demo2: {
     intro:
       "Brides don't reach out in one place. They DM, they WhatsApp, they call — sometimes all three. VoiceDesk catches all of it. As one lead.",
-    outro:
-      "Now you know who wants you. But a lead you never follow up on is the same as a lead you never caught.",
     igThread: [
       {
         from: "in",
@@ -145,14 +164,14 @@ export const photographerConfig: PersonaConfig = {
       { channel: "wa", label: "Ritika followed up on WhatsApp", time: "9:41 PM" },
       { channel: "call", label: "Missed call from Ritika", time: "10:02 PM" },
     ],
+    ctaLabel: "Now watch VoiceDesk close her",
+    ctaHref: "#demo-3",
   },
 
   // Demo 3 — Follow-up
   demo3: {
     intro:
       "Following up is where deals are won. While you're at the wedding, VoiceDesk is nudging, reminding, qualifying — so when you finally pick up the phone, the lead is warm and ready.",
-    outro:
-      "Three fears, three fixes. Caught it. Connected it. Closed it. That's the front desk that used to need a team of three.",
     beforeMissedItems: [
       {
         icon: "phone-off",
@@ -211,26 +230,24 @@ export const photographerConfig: PersonaConfig = {
       },
     ],
     afterBookingValue: "₹2.4L",
+    ctaLabel: "Get this for your studio",
+    ctaHref: "#waitlist",
   },
 
-  // Beyond — roadmap teaser
-  beyondPoints: [
-    {
-      icon: "message-circle-heart",
-      title: "Speaks Hindi, Tamil, Gujarati & more",
-      body: "Your bride from a Tier-3 town gets answered warmly in her own language — not a clunky English bot.",
-    },
-    {
-      icon: "sparkles",
-      title: "Remembers every bride",
-      body: "She enquired last December? VoiceDesk remembers her name, her venue, her budget. You sound like a luxury concierge.",
-    },
-    {
-      icon: "trending-up",
-      title: "Wakes up your dead leads",
-      body: "January looking light? VoiceDesk re-engages the 14 brides who ghosted you last quarter, while you sleep.",
-    },
-  ],
+  // Waitlist / form section
+  waitlist: {
+    eyebrow: "Beta access",
+    headline: "Get VoiceDesk running before your next Saturday shoot.",
+    sub: "Ten minutes to set up. First 100 photographers get their first month free.",
+    ctaLabel: "Join the beta",
+    microcopy: "We'll reach out within 24 hours with early-access pricing.",
+  },
+
+  // Sticky footer CTA — mobile-only, always visible.
+  stickyCta: {
+    label: "Stop losing leads",
+    href: "#waitlist",
+  },
 
   // Objections — 3 fears, 3 reassurances
   objections: [

@@ -1,20 +1,16 @@
-import Button from "@/components/ui/Button";
 import Eyebrow from "@/components/ui/Eyebrow";
-import HeroLoop from "@/components/demos/HeroLoop";
 import type { PersonaConfig } from "@/personas/types";
 
-// HeroLoop is a `"use client"` component — Next.js auto code-splits it into
-// the client bundle. Its initial-state SSR output is the stage-0 frame
-// (3 pre-seeded leads visible, new card collapsed), so first paint is
-// already correct; hydration is invisible.
+// Lean hero. No CTA and no beta microcopy — those responsibilities now live
+// on the sticky footer (mobile) and inside each demo's progression CTA.
+// Keeping this section short is what buys us "Demo 1 is 60% visible in the
+// first fold" from the IA revisit.
 
 type Props = {
   config: PersonaConfig;
 };
 
 export default function Hero({ config }: Props) {
-  // Pull the loss number out of the sub-line for visual emphasis. The
-  // heroLossNumber is the exact substring we want to colorize / weight.
   const { heroSub, heroLossNumber } = config;
   const lossIdx = heroSub.indexOf(heroLossNumber);
   const subBefore = lossIdx >= 0 ? heroSub.slice(0, lossIdx) : heroSub;
@@ -23,13 +19,13 @@ export default function Hero({ config }: Props) {
   return (
     <section
       style={{
-        padding: "calc(var(--section-pad-y) + 1rem) var(--section-pad-x) var(--section-pad-y)",
+        padding: "calc(var(--section-pad-y) - 0.5rem) var(--section-pad-x) calc(var(--section-pad-y) - 1rem)",
         textAlign: "center",
         background: "var(--color-linen)",
       }}
     >
       <div style={{ maxWidth: 440, margin: "0 auto" }}>
-        <div style={{ marginBottom: 18 }}>
+        <div style={{ marginBottom: 16 }}>
           <Eyebrow>{config.eyebrow}</Eyebrow>
         </div>
 
@@ -55,7 +51,7 @@ export default function Hero({ config }: Props) {
             fontSize: 15,
             lineHeight: 1.6,
             color: "var(--color-mocha)",
-            margin: "20px auto 0",
+            margin: "18px auto 0",
             maxWidth: 360,
           }}
         >
@@ -67,29 +63,6 @@ export default function Hero({ config }: Props) {
           )}
           {subAfter}
         </p>
-
-        <div style={{ marginTop: 26 }}>
-          <Button href="#waitlist" fullWidth>
-            Stop losing leads tonight
-          </Button>
-        </div>
-
-        <p
-          style={{
-            marginTop: 12,
-            fontFamily: "var(--font-jakarta), system-ui, sans-serif",
-            fontSize: 11,
-            lineHeight: 1.5,
-            color: "var(--color-sand-dark)",
-            letterSpacing: "0.02em",
-          }}
-        >
-          Beta is live · First 100 get the first month free
-        </p>
-
-        <div style={{ marginTop: 32 }}>
-          <HeroLoop config={config} />
-        </div>
       </div>
     </section>
   );
