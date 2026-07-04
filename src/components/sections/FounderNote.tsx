@@ -11,7 +11,7 @@ export default function FounderNote({ config }: Props) {
   return (
     <section
       style={{
-        padding: "calc(var(--section-pad-y) - 0.25rem) var(--section-pad-x)",
+        padding: "var(--section-pad-y) var(--section-pad-x)",
         background: "var(--color-linen)",
       }}
     >

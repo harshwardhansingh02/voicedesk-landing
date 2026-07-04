@@ -48,8 +48,12 @@
   --radius-lg: 14px;
   --radius-xl: 20px;
 
-  /* Spacing — mobile section padding */
-  --section-pad-y: 3rem;
+  /* Spacing — mobile section padding.
+     Standardized rhythm: every section uses var(--section-pad-y) for
+     top + bottom unless it's part of the first-fold cluster (Hero +
+     Demo 1) which uses tighter overrides. Cross-section gap works out
+     to 2 × section-pad-y. */
+  --section-pad-y: 1.75rem;
   --section-pad-x: 1.25rem;
 }
 

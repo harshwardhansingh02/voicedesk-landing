@@ -16,13 +16,12 @@ export const photographerConfig: PersonaConfig = {
     line2: "VoiceDesk was closing.",
   },
   heroSub:
-    "The average wedding photographer loses ₹4–6L a year to calls and DMs they never saw.",
-  heroLossNumber: "₹4–6L a year",
+    "The average wedding photographer loses ₹15–20L a year to calls and DMs they miss.",
+  heroLossNumber: "₹15–20L a year",
 
-  // Demo 1 — Capture
+  // Demo 1 — Capture. No standalone description; the demo speaks for itself.
   demo1: {
-    intro:
-      "Catching every lead is where it starts. Every call, every DM, every message — captured, qualified, and sorted by urgency.",
+    intro: "",
     pretypedLeads: [
       {
         name: "Ananya Rao",
@@ -91,11 +90,13 @@ export const photographerConfig: PersonaConfig = {
     ],
   },
 
-  // Demo 3 — Follow-up
+  // Demo 3 — Merged channels + follow-up story. Toggle contrasts
+  // "Without VoiceDesk" (fragmented cross-channel misses) with
+  // "With VoiceDesk" (unified lead card + timeline of responses).
   demo3: {
-    sectionHeading: "Now watch VoiceDesk close her",
+    sectionHeading: "See how VoiceDesk closes across every channel",
     intro:
-      "Follow-up wins deals. VoiceDesk keeps the lead warm while you shoot — so when you finally call, she's ready to book.",
+      "Brides don't reach out in one place — they DM, they WhatsApp, they call. VoiceDesk catches all of it as one lead, keeps her warm while you shoot, and closes when you finally call.",
     beforeMissedItems: [
       { icon: "phone-off", text: "Called your number — went to voicemail", time: "Sat, 9:12 PM" },
       { icon: "brand-instagram", text: "DM'd on Instagram — no reply", time: "Sat, 9:14 PM" },

@@ -5,21 +5,34 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
-import type { PersonaConfig } from "@/personas/types";
+import type { PersonaConfig, Touchpoint } from "@/personas/types";
 
-// Demo 3 — Follow-up. Section heading (Fraunces italic) bridges from D2.
-// Before/after presented as a segmented toggle: "Without VoiceDesk" vs
-// "With VoiceDesk". Single frame swaps content on toggle — no vertical
-// stacking of before + after cards. CTA below (the only form-redirect
-// CTA on the page besides the sticky footer).
+// Merged demo — combines the channel-unification story (former Demo 2) with
+// the follow-up close (former Demo 3). Same "Without / With VoiceDesk"
+// toggle. The With frame gains a unified-lead card on top that visualizes
+// the multi-channel capture, followed by the timeline of VoiceDesk's
+// responses. The Without frame keeps channel icons prominent so the
+// fragmentation reads immediately.
+//
+// Full interactive chat threads (former Demo 2) + click-through timeline
+// animations land in build steps 8-9.
 
 type View = "without" | "with";
 
 type Props = { config: PersonaConfig };
 
+const CHANNEL_META: Record<
+  Touchpoint["channel"],
+  { icon: string; bg: string; fg: string }
+> = {
+  ig: { icon: "brand-instagram", bg: "var(--color-ig-bg)", fg: "var(--color-ig)" },
+  wa: { icon: "brand-whatsapp", bg: "var(--color-wa-bg)", fg: "var(--color-wa)" },
+  call: { icon: "phone-off", bg: "var(--color-sand)", fg: "var(--color-mocha)" },
+};
+
 export default function DemoFollowup({ config }: Props) {
   const [view, setView] = useState<View>("without");
-  const { demo3 } = config;
+  const { demo2, demo3 } = config;
 
   return (
     <section
@@ -47,10 +60,10 @@ export default function DemoFollowup({ config }: Props) {
           {demo3.sectionHeading}
         </h2>
 
-        {/* Context text */}
+        {/* Context */}
         <p
           style={{
-            marginTop: 14,
+            marginTop: 12,
             fontFamily: "var(--font-jakarta), system-ui, sans-serif",
             fontSize: 14,
             lineHeight: 1.6,
@@ -61,17 +74,11 @@ export default function DemoFollowup({ config }: Props) {
           {demo3.intro}
         </p>
 
-        {/* Toggle — segmented control */}
+        {/* Toggle */}
         <Toggle view={view} onChange={setView} />
 
-        {/* Frame — content swaps on toggle */}
-        <div
-          style={{
-            marginTop: 14,
-            position: "relative",
-            minHeight: 300,
-          }}
-        >
+        {/* Frame */}
+        <div style={{ marginTop: 14, position: "relative", minHeight: 320 }}>
           <AnimatePresence mode="wait" initial={false}>
             {view === "without" ? (
               <motion.div
@@ -91,14 +98,14 @@ export default function DemoFollowup({ config }: Props) {
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.28, ease: [0.34, 1.56, 0.64, 1] }}
               >
-                <WithCard demo3={demo3} />
+                <WithCard demo2={demo2} demo3={demo3} />
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
-        {/* CTA — the sole form-redirect CTA on the page (besides sticky footer) */}
-        <div style={{ marginTop: 24 }}>
+        {/* CTA — sole form-redirect on the page (besides sticky footer) */}
+        <div style={{ marginTop: 22 }}>
           <Button href={demo3.ctaHref} fullWidth>
             {demo3.ctaLabel}
             <span aria-hidden style={{ fontSize: 14, marginLeft: 2 }}>→</span>
@@ -123,7 +130,7 @@ function Toggle({
       role="tablist"
       aria-label="Compare with and without VoiceDesk"
       style={{
-        marginTop: 22,
+        marginTop: 20,
         position: "relative",
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
@@ -132,11 +139,8 @@ function Toggle({
         borderRadius: 999,
       }}
     >
-      {/* Sliding indicator */}
       <motion.div
         aria-hidden
-        layout
-        transition={{ type: "spring", stiffness: 320, damping: 30 }}
         style={{
           position: "absolute",
           top: 4,
@@ -206,7 +210,7 @@ function ToggleButton({
   );
 }
 
-// ─── Frames ──────────────────────────────────────────────────────────────
+// ─── Without frame ───────────────────────────────────────────────────────
 
 function WithoutCard({ demo3 }: { demo3: PersonaConfig["demo3"] }) {
   return (
@@ -218,7 +222,7 @@ function WithoutCard({ demo3 }: { demo3: PersonaConfig["demo3"] }) {
         padding: 16,
       }}
     >
-      <FrameLabel>Saturday · that same evening</FrameLabel>
+      <FrameLabel>Saturday · Ritika reached out</FrameLabel>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 10 }}>
         {demo3.beforeMissedItems.map((item, i) => (
@@ -228,20 +232,12 @@ function WithoutCard({ demo3 }: { demo3: PersonaConfig["demo3"] }) {
               display: "flex",
               alignItems: "flex-start",
               gap: 10,
-              padding: "9px 11px",
+              padding: "10px 12px",
               background: "var(--color-linen)",
               borderRadius: "var(--radius-sm)",
             }}
           >
-            <div
-              style={{
-                color: "var(--color-mocha)",
-                marginTop: 1,
-                flexShrink: 0,
-              }}
-            >
-              <Icon name={item.icon} size={13} strokeWidth={1.75} />
-            </div>
+            <ChannelIcon iconName={item.icon} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div
                 style={{
@@ -258,7 +254,7 @@ function WithoutCard({ demo3 }: { demo3: PersonaConfig["demo3"] }) {
                   fontFamily: "var(--font-jakarta), system-ui, sans-serif",
                   fontSize: 10,
                   color: "var(--color-sand-dark)",
-                  marginTop: 1,
+                  marginTop: 2,
                 }}
               >
                 {item.time}
@@ -287,7 +283,19 @@ function WithoutCard({ demo3 }: { demo3: PersonaConfig["demo3"] }) {
   );
 }
 
-function WithCard({ demo3 }: { demo3: PersonaConfig["demo3"] }) {
+// ─── With frame — unified card on top, timeline below ────────────────────
+
+function WithCard({
+  demo2,
+  demo3,
+}: {
+  demo2: PersonaConfig["demo2"];
+  demo3: PersonaConfig["demo3"];
+}) {
+  // afterTimeline: last item is the success beat — pulled out into its
+  // own banner; first N-1 items form the timeline preview.
+  const timelineItems = demo3.afterTimeline.slice(0, -1);
+
   return (
     <div
       style={{
@@ -299,12 +307,64 @@ function WithCard({ demo3 }: { demo3: PersonaConfig["demo3"] }) {
     >
       <FrameLabel emphasis>Same Saturday · VoiceDesk was on</FrameLabel>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 10 }}>
-        {demo3.afterTimeline.slice(0, 4).map((node, i) => (
+      {/* Unified lead card — the channel-unification beat */}
+      <div
+        style={{
+          marginTop: 10,
+          padding: "12px 14px",
+          background: "var(--color-linen)",
+          borderRadius: "var(--radius-md)",
+          border: "0.5px dashed rgba(201,168,76,0.35)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 10,
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "var(--font-jakarta), system-ui, sans-serif",
+              fontSize: 14,
+              fontWeight: 500,
+              color: "var(--color-ink)",
+            }}
+          >
+            {demo2.unifiedLeadName}
+          </div>
+          <ChannelChips touchpoints={demo2.unifiedTouchpoints} />
+        </div>
+        <div
+          style={{
+            marginTop: 4,
+            fontFamily: "var(--font-jakarta), system-ui, sans-serif",
+            fontSize: 10,
+            color: "var(--color-warm-accent)",
+            letterSpacing: "0.02em",
+            textTransform: "uppercase",
+          }}
+        >
+          Caught across {demo2.unifiedTouchpoints.length} channels · one lead
+        </div>
+      </div>
+
+      {/* Timeline */}
+      <div
+        style={{
+          marginTop: 12,
+          display: "flex",
+          flexDirection: "column",
+          gap: 6,
+        }}
+      >
+        {timelineItems.map((node, i) => (
           <div
             key={i}
             style={{
-              padding: "9px 11px",
+              padding: "9px 12px",
               background: "var(--color-linen)",
               borderRadius: "var(--radius-sm)",
             }}
@@ -314,6 +374,7 @@ function WithCard({ demo3 }: { demo3: PersonaConfig["demo3"] }) {
                 fontFamily: "var(--font-jakarta), system-ui, sans-serif",
                 fontSize: 10,
                 color: "var(--color-sand-dark)",
+                letterSpacing: "0.01em",
               }}
             >
               {node.time}
@@ -348,6 +409,68 @@ function WithCard({ demo3 }: { demo3: PersonaConfig["demo3"] }) {
       >
         Booking confirmed · {demo3.afterBookingValue}
       </div>
+    </div>
+  );
+}
+
+// ─── Small parts ─────────────────────────────────────────────────────────
+
+function ChannelChips({ touchpoints }: { touchpoints: Touchpoint[] }) {
+  return (
+    <div style={{ display: "flex", gap: 4 }}>
+      {touchpoints.map((tp, i) => {
+        const meta = CHANNEL_META[tp.channel];
+        return (
+          <div
+            key={i}
+            title={tp.label}
+            style={{
+              width: 22,
+              height: 22,
+              borderRadius: "50%",
+              background: meta.bg,
+              color: meta.fg,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Icon name={meta.icon} size={11} strokeWidth={1.75} />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function ChannelIcon({ iconName }: { iconName: string }) {
+  // Colored chip that matches the channel identity where relevant so the
+  // multi-channel misses in the Without frame read at a glance.
+  const meta = ((): { bg: string; fg: string } => {
+    if (iconName === "brand-instagram")
+      return { bg: "var(--color-ig-bg)", fg: "var(--color-ig)" };
+    if (iconName === "brand-whatsapp")
+      return { bg: "var(--color-wa-bg)", fg: "var(--color-wa)" };
+    return { bg: "var(--color-sand)", fg: "var(--color-mocha)" };
+  })();
+
+  return (
+    <div
+      aria-hidden
+      style={{
+        width: 24,
+        height: 24,
+        borderRadius: "50%",
+        background: meta.bg,
+        color: meta.fg,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+        marginTop: 1,
+      }}
+    >
+      <Icon name={iconName} size={12} strokeWidth={1.75} />
     </div>
   );
 }

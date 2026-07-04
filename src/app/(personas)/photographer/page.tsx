@@ -6,22 +6,19 @@ import FounderNote from "@/components/sections/FounderNote";
 import Waitlist from "@/components/sections/Waitlist";
 import Footer from "@/components/sections/Footer";
 import DemoCapture from "@/components/demos/DemoCapture";
-import DemoChannels from "@/components/demos/DemoChannels";
 import DemoFollowup from "@/components/demos/DemoFollowup";
 import StickyFooterCTA from "@/components/ui/StickyFooterCTA";
 import { photographerConfig } from "@/personas/photographer";
 
-// Persona page for wedding photographers. IA (post-revisit):
-//   Hero (pre-header + war cry + subheading — lean)
-//   Demo 1 (Capture) — demo description flows straight from hero
-//   Section heading → Demo 2 (Channels)
-//   Section heading → Demo 3 (Follow-up, toggled before/after) + CTA
-//   Waitlist (2-step wizard)
+// Persona page for wedding photographers. IA (post-merge):
+//   Hero (lean, no CTA)
+//   Demo 1 (Capture — dashboard flows straight from hero)
+//   Demo Merged (Channels + Follow-up, toggled Without/With, CTA to form)
+//   #after-demos marker — sticky footer wakes up once this scrolls past
+//   Waitlist wizard
 //   Objections → FounderNote → Footer
-// + StickyFooterCTA (mobile-only, always visible, auto-hides in Waitlist)
-//
-// Story-carrying prose lives inside components, not in standalone text
-// blocs — the mirror vignette is retired here and moved to IG story.
+// Sticky footer CTA is mobile-only; hidden until scrolled past #after-demos
+// and hidden while #waitlist is in view.
 
 export const metadata: Metadata = {
   title: "VoiceDesk for wedding photographers — Never lose another lead",
@@ -43,8 +40,9 @@ export default function PhotographerPage() {
       <main>
         <Hero config={cfg} />
         <DemoCapture config={cfg} />
-        <DemoChannels config={cfg} />
         <DemoFollowup config={cfg} />
+        {/* Marker: sticky footer wakes up once this scrolls above viewport */}
+        <div id="after-demos" aria-hidden style={{ height: 0 }} />
         <Waitlist config={cfg} />
         <Objections config={cfg} />
         <FounderNote config={cfg} />
@@ -53,6 +51,7 @@ export default function PhotographerPage() {
       <StickyFooterCTA
         label={cfg.stickyCta.label}
         href={cfg.stickyCta.href}
+        showWhenPastId="after-demos"
         hideWhenInView="waitlist"
       />
     </>

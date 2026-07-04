@@ -2,31 +2,57 @@
 
 import { useEffect, useState } from "react";
 
-// Mobile-only sticky footer CTA. Renders on top of the page, hides itself
-// while the waitlist form is in view (so it doesn't compete with the same
-// action inside the form section). Desktop hides it entirely via the media
-// query in the outer wrapper.
+// Mobile-only sticky footer CTA. Two gating rules combine:
+//   • Show only when a "trigger" marker (id passed via showWhenPastId)
+//     is above the viewport top — i.e. the user has scrolled past the
+//     demo sequence. This keeps the CTA out of the way while demos are
+//     the primary focus.
+//   • Hide when the target section (id via hideWhenInView) is visible,
+//     because the form there already carries the same action.
+// Both observers are additive: visible = pastMarker && !targetInView.
+// Desktop hides the whole thing via a media query.
 
 type Props = {
   label: string;
   href: string;
-  hideWhenInView?: string; // element id to observe; hides CTA when that is visible
+  showWhenPastId?: string;
+  hideWhenInView?: string;
 };
 
-export default function StickyFooterCTA({ label, href, hideWhenInView }: Props) {
-  const [visible, setVisible] = useState(true);
+export default function StickyFooterCTA({
+  label,
+  href,
+  showWhenPastId,
+  hideWhenInView,
+}: Props) {
+  const [pastMarker, setPastMarker] = useState(!showWhenPastId);
+  const [targetInView, setTargetInView] = useState(false);
+
+  useEffect(() => {
+    if (!showWhenPastId) return;
+    const el = document.getElementById(showWhenPastId);
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setPastMarker(entry.boundingClientRect.top < 0),
+      { threshold: 0 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [showWhenPastId]);
 
   useEffect(() => {
     if (!hideWhenInView) return;
     const el = document.getElementById(hideWhenInView);
     if (!el) return;
     const io = new IntersectionObserver(
-      ([entry]) => setVisible(!entry.isIntersecting),
+      ([entry]) => setTargetInView(entry.isIntersecting),
       { threshold: 0.15 }
     );
     io.observe(el);
     return () => io.disconnect();
   }, [hideWhenInView]);
+
+  const visible = pastMarker && !targetInView;
 
   return (
     <div
@@ -41,10 +67,11 @@ export default function StickyFooterCTA({ label, href, hideWhenInView }: Props) 
           "linear-gradient(180deg, rgba(250,247,242,0) 0%, rgba(250,247,242,0.92) 40%, var(--color-linen) 100%)",
         transform: visible ? "translateY(0)" : "translateY(120%)",
         opacity: visible ? 1 : 0,
-        transition: "transform 0.3s ease, opacity 0.25s ease",
+        transition: "transform 0.32s ease, opacity 0.28s ease",
         pointerEvents: visible ? "auto" : "none",
       }}
       className="vd-sticky-cta"
+      aria-hidden={!visible}
     >
       <a
         href={href}

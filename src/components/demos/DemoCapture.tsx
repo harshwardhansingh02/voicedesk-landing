@@ -155,25 +155,10 @@ export default function DemoCapture({ config }: Props) {
       id="demo-1"
     >
       <div style={{ maxWidth: 440, margin: "0 auto" }}>
-        {/* Demo description — the intro line that flows from the hero */}
-        <p
-          style={{
-            marginTop: 0,
-            marginBottom: 0,
-            fontFamily: "var(--font-jakarta), system-ui, sans-serif",
-            fontSize: 14,
-            lineHeight: 1.55,
-            color: "var(--color-mocha)",
-            textAlign: "center",
-          }}
-        >
-          {config.demo1.intro}
-        </p>
-
-        {/* Mock dashboard */}
+        {/* Mock dashboard — flows straight from the hero, no intro copy */}
         <div
           style={{
-            marginTop: 16,
+            marginTop: 0,
             background: "var(--color-cream)",
             border: "0.5px solid var(--color-border)",
             borderRadius: "var(--radius-xl)",
