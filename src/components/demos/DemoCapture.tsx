@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
-import Eyebrow from "@/components/ui/Eyebrow";
 import Icon from "@/components/ui/Icon";
 import type { LeadSeed, PersonaConfig } from "@/personas/types";
 
@@ -150,21 +149,22 @@ export default function DemoCapture({ config }: Props) {
   return (
     <section
       style={{
-        padding: "var(--section-pad-y) var(--section-pad-x)",
+        padding: "0.5rem var(--section-pad-x) var(--section-pad-y)",
         background: "var(--color-linen)",
       }}
       id="demo-1"
     >
       <div style={{ maxWidth: 440, margin: "0 auto" }}>
-        {/* Section intro */}
-        <Eyebrow>Demo 1 · Capture</Eyebrow>
+        {/* Demo description — the intro line that flows from the hero */}
         <p
           style={{
-            marginTop: 12,
+            marginTop: 0,
+            marginBottom: 0,
             fontFamily: "var(--font-jakarta), system-ui, sans-serif",
-            fontSize: 15,
-            lineHeight: 1.6,
-            color: "var(--color-ink)",
+            fontSize: 14,
+            lineHeight: 1.55,
+            color: "var(--color-mocha)",
+            textAlign: "center",
           }}
         >
           {config.demo1.intro}
@@ -173,7 +173,7 @@ export default function DemoCapture({ config }: Props) {
         {/* Mock dashboard */}
         <div
           style={{
-            marginTop: 22,
+            marginTop: 16,
             background: "var(--color-cream)",
             border: "0.5px solid var(--color-border)",
             borderRadius: "var(--radius-xl)",
@@ -273,14 +273,6 @@ export default function DemoCapture({ config }: Props) {
               </Button>
             </div>
           )}
-        </div>
-
-        {/* Progression CTA — advances to Demo 2 */}
-        <div style={{ marginTop: 18 }}>
-          <Button href={config.demo1.ctaHref} fullWidth>
-            {config.demo1.ctaLabel}
-            <span aria-hidden style={{ fontSize: 14, marginLeft: 2 }}>→</span>
-          </Button>
         </div>
       </div>
 

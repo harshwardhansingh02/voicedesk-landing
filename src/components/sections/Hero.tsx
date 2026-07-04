@@ -1,10 +1,10 @@
 import Eyebrow from "@/components/ui/Eyebrow";
 import type { PersonaConfig } from "@/personas/types";
 
-// Lean hero. No CTA and no beta microcopy — those responsibilities now live
-// on the sticky footer (mobile) and inside each demo's progression CTA.
-// Keeping this section short is what buys us "Demo 1 is 60% visible in the
-// first fold" from the IA revisit.
+// Lean hero. Pre-header + header + subheading only — no CTA, no HeroLoop,
+// no vignette. Tight vertical rhythm so Demo 1 is at least 50% visible
+// on landing (mobile portrait). The sticky footer CTA carries the
+// "act now" job.
 
 type Props = {
   config: PersonaConfig;
@@ -19,13 +19,13 @@ export default function Hero({ config }: Props) {
   return (
     <section
       style={{
-        padding: "calc(var(--section-pad-y) - 0.5rem) var(--section-pad-x) calc(var(--section-pad-y) - 1rem)",
+        padding: "1.25rem var(--section-pad-x) 0.75rem",
         textAlign: "center",
         background: "var(--color-linen)",
       }}
     >
       <div style={{ maxWidth: 440, margin: "0 auto" }}>
-        <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 12 }}>
           <Eyebrow>{config.eyebrow}</Eyebrow>
         </div>
 
@@ -34,8 +34,8 @@ export default function Hero({ config }: Props) {
             fontFamily: "var(--font-fraunces), Georgia, serif",
             fontStyle: "italic",
             fontWeight: 400,
-            fontSize: 32,
-            lineHeight: 1.18,
+            fontSize: 30,
+            lineHeight: 1.16,
             color: "var(--color-ink)",
             margin: 0,
             letterSpacing: "-0.005em",
@@ -48,10 +48,10 @@ export default function Hero({ config }: Props) {
         <p
           style={{
             fontFamily: "var(--font-jakarta), system-ui, sans-serif",
-            fontSize: 15,
-            lineHeight: 1.6,
+            fontSize: 14,
+            lineHeight: 1.55,
             color: "var(--color-mocha)",
-            margin: "18px auto 0",
+            margin: "14px auto 0",
             maxWidth: 360,
           }}
         >

@@ -1,11 +1,11 @@
-import Button from "@/components/ui/Button";
-import Eyebrow from "@/components/ui/Eyebrow";
 import Icon from "@/components/ui/Icon";
 import type { PersonaConfig, Touchpoint } from "@/personas/types";
 
-// Demo 2 — Channels. Placeholder implementation: static preview of the
-// "unified lead" card with 3 touchpoints (IG / WA / call), rendered from
-// config. Interactive chat threads + merge animation land in build step 8.
+// Demo 2 — Channels. The section heading (Fraunces italic) is the
+// narrative bridge from Demo 1: "See what happens when she also DMs".
+// Below it, context text, then the static unified-lead preview.
+// No progression CTA — user scrolls to Demo 3. Full interactive chat
+// threads + merge animation land in build step 8.
 
 type Props = { config: PersonaConfig };
 
@@ -30,14 +30,32 @@ export default function DemoChannels({ config }: Props) {
       }}
     >
       <div style={{ maxWidth: 440, margin: "0 auto" }}>
-        <Eyebrow>Demo 2 · Channels</Eyebrow>
+        {/* Section heading — the bridge from Demo 1 */}
+        <h2
+          style={{
+            fontFamily: "var(--font-fraunces), Georgia, serif",
+            fontStyle: "italic",
+            fontWeight: 400,
+            fontSize: 26,
+            lineHeight: 1.22,
+            color: "var(--color-ink)",
+            margin: 0,
+            textAlign: "center",
+            letterSpacing: "-0.005em",
+          }}
+        >
+          {demo2.sectionHeading}
+        </h2>
+
+        {/* Context text */}
         <p
           style={{
-            marginTop: 12,
+            marginTop: 14,
             fontFamily: "var(--font-jakarta), system-ui, sans-serif",
-            fontSize: 15,
+            fontSize: 14,
             lineHeight: 1.6,
-            color: "var(--color-ink)",
+            color: "var(--color-mocha)",
+            textAlign: "center",
           }}
         >
           {demo2.intro}
@@ -132,14 +150,6 @@ export default function DemoChannels({ config }: Props) {
               );
             })}
           </div>
-        </div>
-
-        {/* Progression CTA */}
-        <div style={{ marginTop: 22 }}>
-          <Button href={demo2.ctaHref} fullWidth>
-            {demo2.ctaLabel}
-            <span aria-hidden style={{ fontSize: 14, marginLeft: 2 }}>→</span>
-          </Button>
         </div>
       </div>
     </section>
