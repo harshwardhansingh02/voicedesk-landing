@@ -63,6 +63,8 @@ type Props = { config: PersonaConfig };
 export default function Waitlist({ config }: Props) {
   const { waitlist } = config;
   const [step, setStep] = useState<Step>("details");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [data, setData] = useState<FormData>({
     name: "",
     whatsapp: "",
@@ -89,9 +91,48 @@ export default function Waitlist({ config }: Props) {
   const update = <K extends keyof FormData>(key: K, value: FormData[K]) =>
     setData((d) => ({ ...d, [key]: value }));
 
-  const handleSubmit = () => {
-    // TODO(step 10): POST to backend
-    setStep("success");
+  // Submits to the Google Apps Script Web app. Uses Content-Type text/plain
+  // to avoid a CORS preflight — Apps Script doesn't handle OPTIONS. The
+  // script parses e.postData.contents as JSON regardless of content-type.
+  // If NEXT_PUBLIC_WAITLIST_URL isn't set (local dev), we fall through to
+  // the success screen without a network call.
+  const handleSubmit = async () => {
+    if (submitting) return;
+    const url = process.env.NEXT_PUBLIC_WAITLIST_URL;
+    setSubmitError(null);
+
+    if (!url) {
+      setStep("success");
+      return;
+    }
+
+    const payload = {
+      timestamp: new Date().toISOString(),
+      source: config.slug,
+      name: data.name.trim(),
+      whatsapp: data.whatsapp.trim(),
+      instagram: data.instagram.replace(/^@/, "").trim(),
+      profession: data.profession,
+      currentSystem: data.currentSystem.trim(),
+      referralSource: data.referralSource,
+    };
+
+    setSubmitting(true);
+    try {
+      await fetch(url, {
+        method: "POST",
+        redirect: "follow",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+      });
+      setStep("success");
+    } catch {
+      setSubmitError(
+        "Couldn't reach our servers — try again, or WhatsApp us at hello@thevoicedesk.com."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const step1Progress = completed / requiredCount;
@@ -198,6 +239,8 @@ export default function Waitlist({ config }: Props) {
                     onBack={() => setStep("details")}
                     onSubmit={handleSubmit}
                     submitLabel={waitlist.ctaLabel}
+                    submitting={submitting}
+                    error={submitError}
                   />
                 </motion.div>
               )}
@@ -460,12 +503,16 @@ function OptionalStep({
   onBack,
   onSubmit,
   submitLabel,
+  submitting,
+  error,
 }: {
   data: FormData;
   onChange: <K extends keyof FormData>(key: K, value: FormData[K]) => void;
   onBack: () => void;
   onSubmit: () => void;
   submitLabel: string;
+  submitting: boolean;
+  error: string | null;
 }) {
   return (
     <form
@@ -527,6 +574,7 @@ function OptionalStep({
         <button
           type="button"
           onClick={onBack}
+          disabled={submitting}
           className="vd-btn vd-btn-secondary"
           style={{
             padding: "14px 18px",
@@ -537,7 +585,8 @@ function OptionalStep({
             border: "0.5px solid var(--color-border-strong)",
             background: "transparent",
             color: "var(--color-mocha)",
-            cursor: "pointer",
+            cursor: submitting ? "not-allowed" : "pointer",
+            opacity: submitting ? 0.5 : 1,
             WebkitTapHighlightColor: "transparent",
           }}
         >
@@ -545,6 +594,7 @@ function OptionalStep({
         </button>
         <button
           type="submit"
+          disabled={submitting}
           className="vd-btn vd-btn-primary"
           style={{
             padding: "14px 20px",
@@ -555,13 +605,30 @@ function OptionalStep({
             border: "0.5px solid transparent",
             background: "var(--color-ink)",
             color: "var(--color-cream-on-dark)",
-            cursor: "pointer",
+            cursor: submitting ? "wait" : "pointer",
+            opacity: submitting ? 0.85 : 1,
             WebkitTapHighlightColor: "transparent",
           }}
         >
-          {submitLabel} →
+          {submitting ? "Joining…" : `${submitLabel} →`}
         </button>
       </div>
+
+      {error && (
+        <p
+          role="alert"
+          style={{
+            margin: "6px 0 0",
+            fontFamily: "var(--font-jakarta), system-ui, sans-serif",
+            fontSize: 12,
+            lineHeight: 1.5,
+            color: "var(--color-danger-text)",
+            textAlign: "center",
+          }}
+        >
+          {error}
+        </p>
+      )}
     </form>
   );
 }
