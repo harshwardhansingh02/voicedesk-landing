@@ -94,15 +94,21 @@ export default function Waitlist({ config }: Props) {
   // Submits to the Google Apps Script Web app. Uses Content-Type text/plain
   // to avoid a CORS preflight — Apps Script doesn't handle OPTIONS. The
   // script parses e.postData.contents as JSON regardless of content-type.
-  // If NEXT_PUBLIC_WAITLIST_URL isn't set (local dev), we fall through to
-  // the success screen without a network call.
+  // If NEXT_PUBLIC_WAITLIST_URL isn't set we surface a loud error rather
+  // than silently show success — dropping leads to a black hole is worse
+  // than a broken form.
   const handleSubmit = async () => {
     if (submitting) return;
     const url = process.env.NEXT_PUBLIC_WAITLIST_URL;
     setSubmitError(null);
 
     if (!url) {
-      setStep("success");
+      console.error(
+        "[Waitlist] NEXT_PUBLIC_WAITLIST_URL is not set — submission blocked."
+      );
+      setSubmitError(
+        "Form isn't connected right now. WhatsApp us at hello@thevoicedesk.com and we'll add you manually."
+      );
       return;
     }
 
