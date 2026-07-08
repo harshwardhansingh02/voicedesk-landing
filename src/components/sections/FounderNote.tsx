@@ -51,7 +51,7 @@ export default function FounderNote({ config }: Props) {
               textTransform: "uppercase",
             }}
           >
-            — Harsh, founder
+            — Harshwardhan, founder
           </p>
         </div>
       </div>
