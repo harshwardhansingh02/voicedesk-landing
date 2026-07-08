@@ -11,7 +11,9 @@ export default function Objections({ config }: Props) {
   return (
     <section
       style={{
-        padding: "var(--section-pad-y) var(--section-pad-x)",
+        // Extra top+bottom breathing room so the FAQ block sits apart
+        // from the waitlist form above and the founder note below.
+        padding: "calc(var(--section-pad-y) + 1.25rem) var(--section-pad-x)",
         background: "var(--color-linen)",
       }}
     >

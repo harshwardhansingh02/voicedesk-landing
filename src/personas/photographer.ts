@@ -107,7 +107,7 @@ export const photographerConfig: PersonaConfig = {
       { icon: "calendar-x", text: "Booked another photographer by Sunday morning", time: "Sun, 10:30 AM" },
     ],
     beforeLossAmount: "₹3.5L booking gone",
-    withTitle: "Nidhi (caught across 3 channels, one lead)",
+    withTitle: "Nidhi (captured across 3 channels, 1 lead)",
     withCapabilities: [
       {
         icon: "phone",
