@@ -25,6 +25,22 @@ export default function Hero({ config }: Props) {
       }}
     >
       <div style={{ maxWidth: 440, margin: "0 auto" }}>
+        {/* Brand mark — appears on the page so photographers arriving from
+            the DM link see the same waveform icon that renders in the
+            WhatsApp share preview and their browser tab. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/voicedesk-logo-horizontal.png"
+          alt="VoiceDesk"
+          width={132}
+          height={47}
+          style={{
+            display: "block",
+            margin: "0 auto 14px",
+            height: "auto",
+          }}
+        />
+
         <div style={{ marginBottom: 12 }}>
           <Eyebrow>{config.eyebrow}</Eyebrow>
         </div>
