@@ -106,7 +106,7 @@ export const photographerConfig: PersonaConfig = {
       { icon: "brand-whatsapp", text: '"Hi, is anyone available?" — seen at 1 AM, unanswered', time: "Sat, 9:41 PM" },
       { icon: "calendar-x", text: "Booked another photographer by Sunday morning", time: "Sun, 10:30 AM" },
     ],
-    beforeLossAmount: "Rs 3.5L booking gone",
+    beforeLossAmount: "₹3.5L booking gone",
     withTitle: "Nidhi (caught across 3 channels, one lead)",
     withCapabilities: [
       {
@@ -125,7 +125,7 @@ export const photographerConfig: PersonaConfig = {
         response: "Get a smart notification to call Nidhi",
       },
     ],
-    afterBookingValue: "Rs 3.5L",
+    afterBookingValue: "₹3.5L",
     ctaLabel: "Never lose another lead",
     ctaHref: "#waitlist",
   },
