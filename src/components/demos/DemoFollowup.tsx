@@ -5,34 +5,23 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
-import type { PersonaConfig, Touchpoint } from "@/personas/types";
+import type { PersonaConfig } from "@/personas/types";
 
-// Merged demo — combines the channel-unification story (former Demo 2) with
-// the follow-up close (former Demo 3). Same "Without / With VoiceDesk"
-// toggle. The With frame gains a unified-lead card on top that visualizes
-// the multi-channel capture, followed by the timeline of VoiceDesk's
-// responses. The Without frame keeps channel icons prominent so the
-// fragmentation reads immediately.
-//
-// Full interactive chat threads (former Demo 2) + click-through timeline
-// animations land in build steps 8-9.
+// Merged demo — Without vs With VoiceDesk. The Without frame keeps the
+// four fragmented cross-channel misses story ending in a lost booking.
+// The With frame is a three-row capability grid (trigger → response),
+// with a title strip on top that names the lead and calls out that all
+// channels resolve into one lead. The compound icon key
+// "brand-instagram+brand-whatsapp" stacks two icons side-by-side; any
+// other string flows through the single-icon renderer.
 
 type View = "without" | "with";
 
 type Props = { config: PersonaConfig };
 
-const CHANNEL_META: Record<
-  Touchpoint["channel"],
-  { icon: string; bg: string; fg: string }
-> = {
-  ig: { icon: "brand-instagram", bg: "var(--color-ig-bg)", fg: "var(--color-ig)" },
-  wa: { icon: "brand-whatsapp", bg: "var(--color-wa-bg)", fg: "var(--color-wa)" },
-  call: { icon: "phone-off", bg: "var(--color-sand)", fg: "var(--color-mocha)" },
-};
-
 export default function DemoFollowup({ config }: Props) {
   const [view, setView] = useState<View>("without");
-  const { demo2, demo3 } = config;
+  const { demo3 } = config;
 
   return (
     <section
@@ -43,7 +32,6 @@ export default function DemoFollowup({ config }: Props) {
       }}
     >
       <div style={{ maxWidth: 440, margin: "0 auto" }}>
-        {/* Section heading */}
         <h2
           style={{
             fontFamily: "var(--font-fraunces), Georgia, serif",
@@ -60,7 +48,6 @@ export default function DemoFollowup({ config }: Props) {
           {demo3.sectionHeading}
         </h2>
 
-        {/* Context */}
         <p
           style={{
             marginTop: 12,
@@ -74,11 +61,9 @@ export default function DemoFollowup({ config }: Props) {
           {demo3.intro}
         </p>
 
-        {/* Toggle */}
         <Toggle view={view} onChange={setView} />
 
-        {/* Frame */}
-        <div style={{ marginTop: 14, position: "relative", minHeight: 320 }}>
+        <div style={{ marginTop: 14, position: "relative", minHeight: 340 }}>
           <AnimatePresence mode="wait" initial={false}>
             {view === "without" ? (
               <motion.div
@@ -98,13 +83,12 @@ export default function DemoFollowup({ config }: Props) {
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.28, ease: [0.34, 1.56, 0.64, 1] }}
               >
-                <WithCard demo2={demo2} demo3={demo3} />
+                <WithCard demo3={demo3} />
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
-        {/* CTA — sole form-redirect on the page (besides sticky footer) */}
         <div style={{ marginTop: 22 }}>
           <Button href={demo3.ctaHref} fullWidth>
             {demo3.ctaLabel}
@@ -222,7 +206,7 @@ function WithoutCard({ demo3 }: { demo3: PersonaConfig["demo3"] }) {
         padding: 16,
       }}
     >
-      <FrameLabel>Saturday · Ritika reached out</FrameLabel>
+      <FrameLabel>Saturday · Nidhi reached out</FrameLabel>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 10 }}>
         {demo3.beforeMissedItems.map((item, i) => (
@@ -283,19 +267,9 @@ function WithoutCard({ demo3 }: { demo3: PersonaConfig["demo3"] }) {
   );
 }
 
-// ─── With frame — unified card on top, timeline below ────────────────────
+// ─── With frame — title strip + 3 capability rows + booking banner ───────
 
-function WithCard({
-  demo2,
-  demo3,
-}: {
-  demo2: PersonaConfig["demo2"];
-  demo3: PersonaConfig["demo3"];
-}) {
-  // afterTimeline: last item is the success beat — pulled out into its
-  // own banner; first N-1 items form the timeline preview.
-  const timelineItems = demo3.afterTimeline.slice(0, -1);
-
+function WithCard({ demo3 }: { demo3: PersonaConfig["demo3"] }) {
   return (
     <div
       style={{
@@ -307,7 +281,7 @@ function WithCard({
     >
       <FrameLabel emphasis>Same Saturday · VoiceDesk was on</FrameLabel>
 
-      {/* Unified lead card — the channel-unification beat */}
+      {/* Title strip — one line naming the lead + channel unification. */}
       <div
         style={{
           marginTop: 10,
@@ -315,43 +289,17 @@ function WithCard({
           background: "var(--color-linen)",
           borderRadius: "var(--radius-md)",
           border: "0.5px dashed rgba(201,168,76,0.35)",
+          textAlign: "center",
+          fontFamily: "var(--font-jakarta), system-ui, sans-serif",
+          fontSize: 13,
+          fontWeight: 500,
+          color: "var(--color-ink)",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 10,
-          }}
-        >
-          <div
-            style={{
-              fontFamily: "var(--font-jakarta), system-ui, sans-serif",
-              fontSize: 14,
-              fontWeight: 500,
-              color: "var(--color-ink)",
-            }}
-          >
-            {demo2.unifiedLeadName}
-          </div>
-          <ChannelChips touchpoints={demo2.unifiedTouchpoints} />
-        </div>
-        <div
-          style={{
-            marginTop: 4,
-            fontFamily: "var(--font-jakarta), system-ui, sans-serif",
-            fontSize: 10,
-            color: "var(--color-warm-accent)",
-            letterSpacing: "0.02em",
-            textTransform: "uppercase",
-          }}
-        >
-          Caught across {demo2.unifiedTouchpoints.length} channels · one lead
-        </div>
+        {demo3.withTitle}
       </div>
 
-      {/* Timeline */}
+      {/* Capability rows — trigger → response */}
       <div
         style={{
           marginTop: 12,
@@ -360,37 +308,8 @@ function WithCard({
           gap: 6,
         }}
       >
-        {timelineItems.map((node, i) => (
-          <div
-            key={i}
-            style={{
-              padding: "9px 12px",
-              background: "var(--color-linen)",
-              borderRadius: "var(--radius-sm)",
-            }}
-          >
-            <div
-              style={{
-                fontFamily: "var(--font-jakarta), system-ui, sans-serif",
-                fontSize: 10,
-                color: "var(--color-sand-dark)",
-                letterSpacing: "0.01em",
-              }}
-            >
-              {node.time}
-            </div>
-            <div
-              style={{
-                marginTop: 2,
-                fontFamily: "var(--font-jakarta), system-ui, sans-serif",
-                fontSize: 12,
-                color: "var(--color-ink)",
-                lineHeight: 1.4,
-              }}
-            >
-              {node.title}
-            </div>
-          </div>
+        {demo3.withCapabilities.map((cap, i) => (
+          <CapabilityRow key={i} capability={cap} />
         ))}
       </div>
 
@@ -413,18 +332,97 @@ function WithCard({
   );
 }
 
-// ─── Small parts ─────────────────────────────────────────────────────────
-
-function ChannelChips({ touchpoints }: { touchpoints: Touchpoint[] }) {
+function CapabilityRow({
+  capability,
+}: {
+  capability: PersonaConfig["demo3"]["withCapabilities"][number];
+}) {
   return (
-    <div style={{ display: "flex", gap: 4 }}>
-      {touchpoints.map((tp, i) => {
-        const meta = CHANNEL_META[tp.channel];
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "36px 1fr",
+        alignItems: "center",
+        gap: 10,
+        padding: "10px 12px",
+        background: "var(--color-linen)",
+        borderRadius: "var(--radius-sm)",
+      }}
+    >
+      <CapabilityIcon iconKey={capability.icon} />
+      <div style={{ minWidth: 0 }}>
+        <div
+          style={{
+            fontFamily: "var(--font-jakarta), system-ui, sans-serif",
+            fontSize: 12,
+            fontWeight: 500,
+            color: "var(--color-ink)",
+            lineHeight: 1.35,
+          }}
+        >
+          {capability.trigger}
+        </div>
+        <div
+          style={{
+            marginTop: 2,
+            fontFamily: "var(--font-jakarta), system-ui, sans-serif",
+            fontSize: 11,
+            color: "var(--color-mocha)",
+            lineHeight: 1.4,
+          }}
+        >
+          <span
+            aria-hidden
+            style={{
+              color: "var(--color-warm-accent)",
+              fontWeight: 500,
+              marginRight: 4,
+            }}
+          >
+            →
+          </span>
+          {capability.response}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Icon helpers ────────────────────────────────────────────────────────
+
+// Renders 1 or 2 icons stacked, driven by the icon key. The "+"-joined
+// form (e.g. "brand-instagram+brand-whatsapp") stacks the two circles
+// side-by-side. Otherwise single circle.
+function CapabilityIcon({ iconKey }: { iconKey: string }) {
+  const names = iconKey.split("+");
+  if (names.length === 1) {
+    return (
+      <div
+        style={{
+          width: 30,
+          height: 30,
+          borderRadius: "50%",
+          background: "rgba(201,168,76,0.15)",
+          color: "var(--color-warm-accent)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Icon name={names[0]} size={14} strokeWidth={1.75} />
+      </div>
+    );
+  }
+  return (
+    <div style={{ display: "flex", position: "relative", height: 30 }}>
+      {names.map((n, i) => {
+        const meta = miniChipMeta(n);
         return (
           <div
             key={i}
-            title={tp.label}
             style={{
+              position: i === 0 ? "relative" : "absolute",
+              left: i === 0 ? 0 : 14,
               width: 22,
               height: 22,
               borderRadius: "50%",
@@ -433,9 +431,11 @@ function ChannelChips({ touchpoints }: { touchpoints: Touchpoint[] }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              border: "1.5px solid var(--color-linen)",
+              alignSelf: "center",
             }}
           >
-            <Icon name={meta.icon} size={11} strokeWidth={1.75} />
+            <Icon name={n} size={11} strokeWidth={1.75} />
           </div>
         );
       })}
@@ -443,17 +443,16 @@ function ChannelChips({ touchpoints }: { touchpoints: Touchpoint[] }) {
   );
 }
 
-function ChannelIcon({ iconName }: { iconName: string }) {
-  // Colored chip that matches the channel identity where relevant so the
-  // multi-channel misses in the Without frame read at a glance.
-  const meta = ((): { bg: string; fg: string } => {
-    if (iconName === "brand-instagram")
-      return { bg: "var(--color-ig-bg)", fg: "var(--color-ig)" };
-    if (iconName === "brand-whatsapp")
-      return { bg: "var(--color-wa-bg)", fg: "var(--color-wa)" };
-    return { bg: "var(--color-sand)", fg: "var(--color-mocha)" };
-  })();
+function miniChipMeta(name: string): { bg: string; fg: string } {
+  if (name === "brand-instagram")
+    return { bg: "var(--color-ig-bg)", fg: "var(--color-ig)" };
+  if (name === "brand-whatsapp")
+    return { bg: "var(--color-wa-bg)", fg: "var(--color-wa)" };
+  return { bg: "var(--color-sand)", fg: "var(--color-mocha)" };
+}
 
+function ChannelIcon({ iconName }: { iconName: string }) {
+  const meta = miniChipMeta(iconName);
   return (
     <div
       aria-hidden

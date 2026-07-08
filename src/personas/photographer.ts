@@ -82,17 +82,20 @@ export const photographerConfig: PersonaConfig = {
       { from: "in", text: "Flexible — maybe ₹4–5L for the right person", time: "11:04 PM" },
       { from: "out", text: "Perfect — I've noted everything. Sneha will reach out by 9 AM tomorrow ✨", time: "11:05 PM" },
     ],
-    unifiedLeadName: "Ritika Sharma",
+    unifiedLeadName: "Nidhi Sharma",
     unifiedTouchpoints: [
-      { channel: "ig", label: "Ritika DM'd on Instagram", time: "9:14 PM" },
-      { channel: "wa", label: "Ritika followed up on WhatsApp", time: "9:41 PM" },
-      { channel: "call", label: "Missed call from Ritika", time: "10:02 PM" },
+      { channel: "ig", label: "Nidhi DM'd on Instagram", time: "9:14 PM" },
+      { channel: "wa", label: "Nidhi followed up on WhatsApp", time: "9:41 PM" },
+      { channel: "call", label: "Missed call from Nidhi", time: "10:02 PM" },
     ],
   },
 
-  // Demo 3 — Merged channels + follow-up story. Toggle contrasts
-  // "Without VoiceDesk" (fragmented cross-channel misses) with
-  // "With VoiceDesk" (unified lead card + timeline of responses).
+  // Demo 3 — merged channels + follow-up story. Toggle contrasts
+  // "Without VoiceDesk" (fragmented cross-channel misses story) with
+  // "With VoiceDesk" (title strip + 3 capability rows + booking banner).
+  // Deliberately generic on the channels — VoiceDesk does not have
+  // WhatsApp Business API access yet, so "VoiceDesk responds" is left
+  // ambiguous about the exact wire path.
   demo3: {
     sectionHeading: "See how VoiceDesk closes across every channel",
     intro:
@@ -104,40 +107,25 @@ export const photographerConfig: PersonaConfig = {
       { icon: "calendar-x", text: "Booked another photographer by Sunday morning", time: "Sun, 10:30 AM" },
     ],
     beforeLossAmount: "₹2.5L booking · gone.",
-    afterTimeline: [
+    withTitle: "Nidhi (caught across 3 channels, one lead)",
+    withCapabilities: [
       {
-        time: "Sat · 9:12 PM · Missed call detected",
-        title: "VoiceDesk sent an instant WhatsApp",
-        kind: "message-out",
-        body: "Hi Ritika! 👋 Sneha's with a client right now but I'm her assistant. Can I grab your wedding details so she can follow up personally?",
+        icon: "phone",
+        trigger: "Nidhi called",
+        response: "VoiceDesk picks up and updates your dashboard with lead details",
       },
       {
-        time: "Sat · 9:16 PM · Ritika replied",
-        title: "Qualification complete — lead captured",
-        kind: "reply",
-        body: "Dec 18 wedding in Jaipur, 3-day function, budget around ₹2–2.5L. Is Sneha available?",
-        followup: "Perfect! I've noted everything. Sneha will personally call you first thing tomorrow morning ✨",
+        icon: "brand-instagram+brand-whatsapp",
+        trigger: "DM'd on Insta/WhatsApp",
+        response: "VoiceDesk responds",
       },
       {
-        time: "Sat · 10:00 PM · You're still shooting",
-        title: "Sneha gets a smart nudge notification",
-        kind: "notification",
-        body: "Hot lead: Ritika Sharma. Dec 18 wedding · Jaipur · ₹2–2.5L budget. She's qualified and waiting for your call.",
-      },
-      {
-        time: "Sun · 9:00 AM · Next morning reminder",
-        title: "VoiceDesk follows up with Ritika",
-        kind: "message-out",
-        body: "Good morning Ritika! 🌸 Sneha will be calling you shortly. She's excited to hear about your December wedding!",
-      },
-      {
-        time: "Sun · 10:30 AM · Booking confirmed",
-        title: "Ritika booked Sneha's full package",
-        kind: "success",
-        body: "₹2.4L · Dec 18 Jaipur · 3-day full coverage",
+        icon: "sparkles",
+        trigger: "You're still shooting",
+        response: "Get a smart notification to call Nidhi",
       },
     ],
-    afterBookingValue: "₹2.4L",
+    afterBookingValue: "₹3.4L",
     ctaLabel: "Never lose another lead",
     ctaHref: "#waitlist",
   },
@@ -159,7 +147,8 @@ export const photographerConfig: PersonaConfig = {
     href: "#waitlist",
   },
 
-  // Objections — 3 fears, 3 reassurances
+  // Objections — 2 fears, 2 reassurances. Pricing was removed to keep
+  // the pre-launch conversation on the sales call, not on the page.
   objections: [
     {
       fear: "Will it sound like a robot and embarrass me?",
@@ -167,14 +156,9 @@ export const photographerConfig: PersonaConfig = {
         "It answers in your name, warmly, in your client's language. Most callers never realize they're talking to AI.",
     },
     {
-      fear: "Is this hard to set up? I'm not technical.",
+      fear: "How to set this up? I'm not technical.",
       answer:
-        "Forward your number. Connect your Instagram. You're live in ten minutes. No apps, no integrations, nothing to learn.",
-    },
-    {
-      fear: "What will it cost me?",
-      answer:
-        "Less than what a part-time receptionist costs in a single day. We'll share early-access pricing with you on the call.",
+        "It's very easy — we connect your primary contact number to our AI agent, and give you a dashboard to track every lead's journey.",
     },
   ],
 

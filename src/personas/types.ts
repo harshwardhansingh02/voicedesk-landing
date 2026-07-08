@@ -34,18 +34,12 @@ export type MissedItem = {
   time: string;                // "Sat, 9:12 PM"
 };
 
-export type TimelineKind =
-  | "message-out"              // outbound message from VoiceDesk
-  | "reply"                    // customer reply (with optional follow-up message)
-  | "notification"             // smart nudge to the operator
-  | "success";                 // booking confirmed
-
-export type TimelineNodeSeed = {
-  time: string;                // "Sat · 9:12 PM · Missed call detected"
-  title: string;
-  kind: TimelineKind;
-  body: string;
-  followup?: string;           // optional second-message bubble (used on `reply`)
+// One capability row on the "With VoiceDesk" side of the merged demo.
+// Reads as: <trigger> → <response>.
+export type WithCapability = {
+  icon: string;                // key into components/ui/Icon.tsx
+  trigger: string;             // e.g. "Nidhi called"
+  response: string;            // e.g. "VoiceDesk picks up and updates your dashboard"
 };
 
 export type Objection = {
@@ -97,15 +91,17 @@ export type PersonaConfig = {
     unifiedTouchpoints: Touchpoint[];
   };
 
-  // Demo 3 — Follow-up. Same heading pattern as Demo 2, plus the sole
-  // form-redirect CTA on the page (besides the sticky footer).
+  // Demo 3 — merged channel-unification + follow-up. Toggle contrasts
+  // "Without VoiceDesk" (fragmented cross-channel misses story) with
+  // "With VoiceDesk" (title strip + 3 capability rows + booking banner).
   demo3: {
     sectionHeading: string;    // Fraunces italic
     intro: string;             // concise + impactful, Jakarta body
     beforeMissedItems: MissedItem[];
     beforeLossAmount: string;
-    afterTimeline: TimelineNodeSeed[];
-    afterBookingValue: string;
+    withTitle: string;         // header line on the With frame, e.g. "Nidhi (caught across 3 channels, one lead)"
+    withCapabilities: WithCapability[];
+    afterBookingValue: string; // banner value on the With frame
     ctaLabel: string;
     ctaHref: string;           // "#waitlist"
   };
