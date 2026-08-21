@@ -19,7 +19,7 @@ export default function Hero({ config }: Props) {
   return (
     <section
       style={{
-        padding: "1.25rem var(--section-pad-x) 0.75rem",
+        padding: "1rem var(--section-pad-x) 0.5rem",
         textAlign: "center",
         background: "var(--color-linen)",
       }}
@@ -36,12 +36,12 @@ export default function Hero({ config }: Props) {
           height={47}
           style={{
             display: "block",
-            margin: "0 auto 14px",
+            margin: "0 auto 10px",
             height: "auto",
           }}
         />
 
-        <div style={{ marginBottom: 12 }}>
+        <div style={{ marginBottom: 10 }}>
           <Eyebrow>{config.eyebrow}</Eyebrow>
         </div>
 
@@ -67,7 +67,7 @@ export default function Hero({ config }: Props) {
             fontSize: 14,
             lineHeight: 1.55,
             color: "var(--color-mocha)",
-            margin: "14px auto 0",
+            margin: "12px auto 0",
             maxWidth: 360,
           }}
         >

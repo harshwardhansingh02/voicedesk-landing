@@ -32,7 +32,7 @@ export default function WhatItDoes({ config }: Props) {
     <section
       id="what-it-does"
       style={{
-        padding: "var(--section-pad-y) var(--section-pad-x) 0",
+        padding: "1.25rem var(--section-pad-x) 0",
         background: "var(--color-linen)",
       }}
     >
@@ -44,11 +44,11 @@ export default function WhatItDoes({ config }: Props) {
         <ul
           style={{
             listStyle: "none",
-            margin: "18px 0 0",
+            margin: "14px 0 0",
             padding: 0,
             display: "flex",
             flexDirection: "column",
-            gap: 14,
+            gap: 9,
           }}
         >
           {whatItDoes.features.map((feature) => (
@@ -61,7 +61,7 @@ export default function WhatItDoes({ config }: Props) {
                 background: "var(--color-cream)",
                 border: "1px solid var(--color-border)",
                 borderRadius: 12,
-                padding: "14px 15px",
+                padding: "12px 14px",
               }}
             >
               <span
@@ -111,11 +111,11 @@ export default function WhatItDoes({ config }: Props) {
 
         {/* Bridge into the demos. Lives here rather than in DemoCapture so
             that component keeps its "dashboard flows straight in" contract. */}
-        <div style={{ marginTop: "var(--section-pad-y)" }}>
+        <div style={{ marginTop: 18 }}>
           <h2 style={SECTION_HEADING}>{seeItInAction.sectionHeading}</h2>
           <p
             style={{
-              marginTop: 10,
+              marginTop: 8,
               fontFamily: "var(--font-jakarta), system-ui, sans-serif",
               fontSize: 14,
               lineHeight: 1.6,

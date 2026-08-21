@@ -80,10 +80,6 @@ export type PersonaConfig = {
   heroSub: string;             // subheading with the loss number
   heroLossNumber: string;      // "₹4–6L a year" — pulled out for emphasis
 
-  // Short description — one calm paragraph under the hero loss line, before
-  // any demo. Answers "what is this?" for someone who will not tap a demo.
-  shortDescription: string;
-
   // "What VoiceDesk does" — 3 plain-language bullets. Skimmer's summary.
   whatItDoes: {
     sectionHeading: string;    // Fraunces italic

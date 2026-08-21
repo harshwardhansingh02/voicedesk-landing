@@ -19,11 +19,6 @@ export const photographerConfig: PersonaConfig = {
     "The average wedding photographer loses ₹15–20L a year to calls and DMs they miss.",
   heroLossNumber: "₹15–20L a year",
 
-  // Short description — the "what is this?" answer for a photographer who
-  // will not tap a demo. Deliberately one breath long.
-  shortDescription:
-    "VoiceDesk is an AI front office for wedding photographers. It answers the calls and DMs you can't get to, asks the bride everything you'd have asked, and hands you a ready lead — so you can shoot without losing work.",
-
   // Three plain-language bullets. Mirrors the three demos below.
   whatItDoes: {
     sectionHeading: "What VoiceDesk does",
@@ -49,7 +44,7 @@ export const photographerConfig: PersonaConfig = {
   // Bridge into the demos.
   seeItInAction: {
     sectionHeading: "See it in action",
-    intro: "Three things happened while you were shooting. Tap through each one.",
+    intro: "Tap to see how VoiceDesk makes lead tracking effortless.",
   },
 
   // Demo 1 — Capture. No standalone description; the demo speaks for itself.
