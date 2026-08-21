@@ -42,6 +42,15 @@ export type WithCapability = {
   response: string;            // e.g. "VoiceDesk picks up and updates your dashboard"
 };
 
+// One bullet in the "What VoiceDesk does" section — three of these sit
+// between the hero and the first demo, giving a skimmer the whole product
+// in plain language before any interactive demo asks for their attention.
+export type WhatItDoesFeature = {
+  icon: string;                // key into components/ui/Icon.tsx
+  title: string;               // "Answers every call and DM"
+  body: string;                // one plain-language sentence
+};
+
 export type Objection = {
   fear: string;
   answer: string;
@@ -70,6 +79,22 @@ export type PersonaConfig = {
   warCry: WarCry;              // header — line1 / line2
   heroSub: string;             // subheading with the loss number
   heroLossNumber: string;      // "₹4–6L a year" — pulled out for emphasis
+
+  // Short description — one calm paragraph under the hero loss line, before
+  // any demo. Answers "what is this?" for someone who will not tap a demo.
+  shortDescription: string;
+
+  // "What VoiceDesk does" — 3 plain-language bullets. Skimmer's summary.
+  whatItDoes: {
+    sectionHeading: string;    // Fraunces italic
+    features: WhatItDoesFeature[];
+  };
+
+  // "See it in action" — the bridge that hands the reader over to the demos.
+  seeItInAction: {
+    sectionHeading: string;    // Fraunces italic
+    intro: string;             // Jakarta body, one line
+  };
 
   // Demo 1 — Capture
   demo1: {

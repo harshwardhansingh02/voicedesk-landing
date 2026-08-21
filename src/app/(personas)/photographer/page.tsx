@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import Hero from "@/components/sections/Hero";
+import ShortDescription from "@/components/sections/ShortDescription";
+import WhatItDoes from "@/components/sections/WhatItDoes";
 import Objections from "@/components/sections/Objections";
 import FounderNote from "@/components/sections/FounderNote";
 import Waitlist from "@/components/sections/Waitlist";
@@ -12,7 +14,9 @@ import { photographerConfig } from "@/personas/photographer";
 
 // Persona page for wedding photographers. IA (post-merge):
 //   Hero (lean, no CTA)
-//   Demo 1 (Capture — dashboard flows straight from hero)
+//   Short description (one-breath "what is this?")
+//   What VoiceDesk does (3 plain-language bullets) + "See it in action" bridge
+//   Demo 1 (Capture)
 //   Demo Merged (Channels + Follow-up, toggled Without/With, CTA to form)
 //   #after-demos marker — sticky footer wakes up once this scrolls past
 //   Waitlist wizard
@@ -39,6 +43,8 @@ export default function PhotographerPage() {
     <>
       <main>
         <Hero config={cfg} />
+        <ShortDescription config={cfg} />
+        <WhatItDoes config={cfg} />
         <DemoCapture config={cfg} />
         <DemoFollowup config={cfg} />
         {/* Marker: sticky footer wakes up once this scrolls above viewport */}
