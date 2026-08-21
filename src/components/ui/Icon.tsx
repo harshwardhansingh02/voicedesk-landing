@@ -16,7 +16,8 @@ export type IconName =
   | "phone-off"
   | "brand-instagram"
   | "brand-whatsapp"
-  | "calendar-x";
+  | "calendar-x"
+  | "chevron-down";
 
 type Props = {
   // Accept string so PersonaConfig's opaque icon strings compile without casts.
@@ -29,6 +30,7 @@ type Props = {
 };
 
 const PATHS: Record<string, React.ReactNode> = {
+  "chevron-down": <polyline points="6 9 12 15 18 9" />,
   "message-circle-heart": (
     <>
       <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />

@@ -175,9 +175,26 @@ export const photographerConfig: PersonaConfig = {
     href: "#waitlist",
   },
 
-  // Objections — 2 fears, 2 reassurances. Pricing was removed to keep
-  // the pre-launch conversation on the sales call, not on the page.
+  // FAQ — 5 entries, rendered as an accordion (see components/sections/
+  // Objections.tsx). Order matters: the three mechanical "how does it
+  // actually work" questions come first, then the two emotional ones.
+  // Pricing stays off the page so it lands on the sales call.
   objections: [
+    {
+      fear: "How will VoiceDesk capture leads who call?",
+      answer:
+        "We give you an agent contact number to add to your Instagram bio, Google listing, website — wherever you get inbound leads. Whenever anyone calls it, VoiceDesk answers, captures their details, and passes them to your dashboard.",
+    },
+    {
+      fear: "How will VoiceDesk capture leads who DM?",
+      answer:
+        "Anyone who DMs you on Instagram or WhatsApp gets a VoiceDesk link as an auto-generated response. It captures their details and passes them to your dashboard.",
+    },
+    {
+      fear: "Can VoiceDesk share my leads with anyone?",
+      answer:
+        "Your leads data is 100% secure and will never be shared with anyone else. For more details, you can read our data protection and privacy policy.",
+    },
     {
       fear: "Will it sound like a robot and embarrass me?",
       answer:
